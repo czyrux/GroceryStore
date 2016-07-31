@@ -1,12 +1,13 @@
 package de.czyrux.storesample.core.domain.cart;
 
+import de.czyrux.storesample.util.Null;
 import rx.Observable;
 
 public interface CartDataSource {
 
     Observable<Cart> getCart();
 
-    Observable<Void> addArticle(CartArticle cartArticle);
+    Observable<Null> addArticle(CartArticle cartArticle);
 
-    Observable<Void> removeArticle(CartArticle cartArticle);
+    Observable<Null> removeArticle(CartArticle cartArticle);
 }
