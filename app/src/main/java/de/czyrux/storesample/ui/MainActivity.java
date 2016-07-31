@@ -1,4 +1,4 @@
-package de.czyrux.storesample;
+package de.czyrux.storesample.ui;
 
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import de.czyrux.storesample.R;
 
 public class MainActivity extends AppCompatActivity {
 
