@@ -23,6 +23,14 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            // All the usual Gradle options.
+            jvmArgs '-XX:MaxPermSize=256m'
+        }
+    }
 }
 
 dependencies {
@@ -41,8 +49,8 @@ dependencies {
 
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.8'
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'// Specify the retrolambda version to use with the plugin
-
+//    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'// Specify the retrolambda version to use with the plugin
+//
 
     // ---- UNIT TEST CONFIGURATION
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
