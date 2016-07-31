@@ -4,10 +4,17 @@ import de.czyrux.storesample.core.domain.article.Article;
 
 public class ArticleFakeCreator {
 
+    private static final String DEFAULT_SKU = "ada300343";
+
     private ArticleFakeCreator() {
     }
 
     public static Article createArticle() {
-        return new Article("ada300343", "Adidas Perf", "someImage", 23.5f);
+        return createArticle(DEFAULT_SKU);
     }
+
+    public static Article createArticle(String sku) {
+        return new Article(sku, "Adidas Perf", "someImage", 23.5f);
+    }
+
 }
