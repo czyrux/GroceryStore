@@ -9,4 +9,20 @@ public class Cart {
     public Cart(List<CartArticle> articles) {
         this.articles = articles;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cart cart = (Cart) o;
+
+        return articles != null ? articles.equals(cart.articles) : cart.articles == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return articles != null ? articles.hashCode() : 0;
+    }
 }
