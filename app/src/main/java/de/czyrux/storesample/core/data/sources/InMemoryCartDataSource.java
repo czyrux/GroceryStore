@@ -1,4 +1,4 @@
-package de.czyrux.storesample.core.data;
+package de.czyrux.storesample.core.data.sources;
 
 import java.util.Collections;
 

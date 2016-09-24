@@ -1,4 +1,4 @@
-package de.czyrux.storesample.core.data;
+package de.czyrux.storesample.core.data.sources;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +7,7 @@ import de.czyrux.storesample.core.domain.cart.Cart;
 import de.czyrux.storesample.core.domain.cart.CartArticle;
 import de.czyrux.storesample.test.CartArticleFakeCreator;
 import de.czyrux.storesample.test.CartFakeCreator;
+import de.czyrux.storesample.util.Null;
 import rx.observers.TestSubscriber;
 
 public class InMemoryCartDataSourceTest {
@@ -35,7 +36,7 @@ public class InMemoryCartDataSourceTest {
 
         CartArticle article = CartArticleFakeCreator.createArticle("Sku1", 2);
 
-        TestSubscriber<Void> addTestSubscriber = new TestSubscriber<>();
+        TestSubscriber<Null> addTestSubscriber = new TestSubscriber<>();
 
         cartDataSource.addArticle(article)
                 .subscribe(addTestSubscriber);
@@ -62,7 +63,7 @@ public class InMemoryCartDataSourceTest {
 
         CartArticle articleToRemove = CartArticleFakeCreator.createArticle("Sku2", 1);
 
-        TestSubscriber<Void> removeTestSubscriber = new TestSubscriber<>();
+        TestSubscriber<Null> removeTestSubscriber = new TestSubscriber<>();
         cartDataSource.removeArticle(articleToRemove)
                 .subscribe(removeTestSubscriber);
 
