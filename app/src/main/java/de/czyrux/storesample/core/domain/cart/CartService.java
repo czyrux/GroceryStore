@@ -1,5 +1,6 @@
 package de.czyrux.storesample.core.domain.cart;
 
+import de.czyrux.storesample.util.Null;
 import rx.Observable;
 
 public class CartService {
@@ -14,11 +15,11 @@ public class CartService {
         return cartDataSource.getCart();
     }
 
-    public Observable<Void> addArticle(CartArticle cartArticle) {
+    public Observable<Null> addArticle(CartArticle cartArticle) {
         return cartDataSource.addArticle(cartArticle);
     }
 
-    public Observable<Void> removeArticle(CartArticle cartArticle) {
+    public Observable<Null> removeArticle(CartArticle cartArticle) {
         return cartDataSource.removeArticle(cartArticle);
     }
 
