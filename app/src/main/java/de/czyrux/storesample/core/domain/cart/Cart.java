@@ -1,10 +1,12 @@
 package de.czyrux.storesample.core.domain.cart;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Cart {
 
-   public final List<CartArticle> articles;
+    public static final Cart EMPTY = new Cart(Collections.emptyList());
+    public final List<CartArticle> articles;
 
     public Cart(List<CartArticle> articles) {
         this.articles = articles;

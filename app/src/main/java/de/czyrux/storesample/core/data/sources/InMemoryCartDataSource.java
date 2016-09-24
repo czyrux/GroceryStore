@@ -1,7 +1,5 @@
 package de.czyrux.storesample.core.data.sources;
 
-import java.util.Collections;
-
 import de.czyrux.storesample.core.domain.cart.Cart;
 import de.czyrux.storesample.core.domain.cart.CartArticle;
 import de.czyrux.storesample.core.domain.cart.CartBuilder;
@@ -14,7 +12,7 @@ public class InMemoryCartDataSource implements CartDataSource {
     private Cart cart;
 
     public InMemoryCartDataSource() {
-        this.cart = new Cart(Collections.emptyList());
+        this.cart = Cart.EMPTY;
     }
 
     @Override
