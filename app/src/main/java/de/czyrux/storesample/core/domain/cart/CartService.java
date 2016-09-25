@@ -1,32 +1,29 @@
 package de.czyrux.storesample.core.domain.cart;
 
-import de.czyrux.storesample.util.Null;
 import rx.Observable;
 
 public class CartService {
 
     private final CartDataSource cartDataSource;
+    private final CartStore cartStore;
 
-    public CartService(CartDataSource cartDataSource) {
+    public CartService(CartDataSource cartDataSource, CartStore cartStore) {
         this.cartDataSource = cartDataSource;
+        this.cartStore = cartStore;
     }
 
     public Observable<Cart> getCart() {
-        return cartDataSource.getCart();
+        return cartDataSource.getCart()
+                .doOnNext(cartStore::publish);
     }
 
-    public Observable<Null> addArticle(CartArticle cartArticle) {
-        return cartDataSource.addArticle(cartArticle);
+    public Observable<Cart> addArticle(CartArticle cartArticle) {
+        return cartDataSource.addArticle(cartArticle)
+                .flatMap(n -> getCart());
     }
 
-    public Observable<Null> removeArticle(CartArticle cartArticle) {
-        return cartDataSource.removeArticle(cartArticle);
-    }
-
-    private void updateCartStore() {
-    }
-
-    private void updateCartStore(Cart cart) {
-
+    public Observable<Cart> removeArticle(CartArticle cartArticle) {
+        return cartDataSource.removeArticle(cartArticle)
+                .flatMap(n -> getCart());
     }
 }
