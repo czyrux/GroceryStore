@@ -2,13 +2,14 @@ package de.czyrux.storesample.core.domain.cart;
 
 import android.support.annotation.VisibleForTesting;
 
+import com.jakewharton.rxrelay.BehaviorRelay;
+import com.jakewharton.rxrelay.SerializedRelay;
+
 import rx.Observable;
-import rx.subjects.BehaviorSubject;
-import rx.subjects.SerializedSubject;
 
 public class CartStore {
 
-    public final SerializedSubject<Cart, Cart> cartBehaviorSubject;
+    public final SerializedRelay<Cart, Cart> cartBehaviorSubject;
 
     public CartStore() {
         this(Cart.EMPTY);
@@ -16,14 +17,14 @@ public class CartStore {
 
     @VisibleForTesting
     CartStore(Cart defaultCart) {
-        this.cartBehaviorSubject = BehaviorSubject.create(defaultCart).toSerialized();
+        this.cartBehaviorSubject = BehaviorRelay.create(defaultCart).toSerialized();
     }
 
     public Observable<Cart> observe() {
-        return cartBehaviorSubject;
+        return cartBehaviorSubject.asObservable();
     }
 
     public void publish(Cart cart) {
-        cartBehaviorSubject.onNext(cart);
+        cartBehaviorSubject.call(cart);
     }
 }

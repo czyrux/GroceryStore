@@ -3,7 +3,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "de.czyrux.storesample"
@@ -49,8 +49,8 @@ dependencies {
 
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.8'
-//    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'// Specify the retrolambda version to use with the plugin
-//
+    compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
+
 
     // ---- UNIT TEST CONFIGURATION
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
