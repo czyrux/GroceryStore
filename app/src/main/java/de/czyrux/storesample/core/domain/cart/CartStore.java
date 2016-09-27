@@ -9,7 +9,7 @@ import rx.Observable;
 
 public class CartStore {
 
-    public final SerializedRelay<Cart, Cart> cartBehaviorSubject;
+    private final SerializedRelay<Cart, Cart> cartBehaviorSubject;
 
     public CartStore() {
         this(Cart.EMPTY);
