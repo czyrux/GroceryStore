@@ -1,12 +1,12 @@
-package de.czyrux.storesample.core.domain.article;
+package de.czyrux.storesample.core.domain.product;
 
-public class Article {
+public class Product {
     public final String sku;
     public final String title;
     public final String imageUrl;
     public final double price;
 
-    public Article(String sku, String title, String imageUrl, double price) {
+    public Product(String sku, String title, String imageUrl, double price) {
         this.sku = sku;
         this.title = title;
         this.imageUrl = imageUrl;
@@ -18,12 +18,12 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Article article = (Article) o;
+        Product product = (Product) o;
 
-        if (Double.compare(article.price, price) != 0) return false;
-        if (sku != null ? !sku.equals(article.sku) : article.sku != null) return false;
-        if (title != null ? !title.equals(article.title) : article.title != null) return false;
-        return imageUrl != null ? imageUrl.equals(article.imageUrl) : article.imageUrl == null;
+        if (Double.compare(product.price, price) != 0) return false;
+        if (sku != null ? !sku.equals(product.sku) : product.sku != null) return false;
+        if (title != null ? !title.equals(product.title) : product.title != null) return false;
+        return imageUrl != null ? imageUrl.equals(product.imageUrl) : product.imageUrl == null;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Article {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Article{");
+        final StringBuilder sb = new StringBuilder("Product{");
         sb.append("sku='").append(sku).append('\'');
         sb.append(", title='").append(title).append('\'');
         sb.append(", imageUrl='").append(imageUrl).append('\'');

@@ -1,7 +1,7 @@
 package de.czyrux.storesample.core.data.sources;
 
 import de.czyrux.storesample.core.domain.cart.Cart;
-import de.czyrux.storesample.core.domain.cart.CartArticle;
+import de.czyrux.storesample.core.domain.cart.CartProduct;
 import de.czyrux.storesample.core.domain.cart.CartBuilder;
 import de.czyrux.storesample.core.domain.cart.CartDataSource;
 import de.czyrux.storesample.util.Null;
@@ -21,18 +21,18 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public Observable<Null> addArticle(CartArticle cartArticle) {
+    public Observable<Null> addProduct(CartProduct cartProduct) {
         cart = CartBuilder.from(cart)
-                .addArticle(cartArticle)
+                .addProduct(cartProduct)
                 .build();
 
         return Observable.just(Null.INSTANCE);
     }
 
     @Override
-    public Observable<Null> removeArticle(CartArticle cartArticle) {
+    public Observable<Null> removeProduct(CartProduct cartProduct) {
         cart = CartBuilder.from(cart)
-                .removeArticle(cartArticle)
+                .removeProduct(cartProduct)
                 .build();
 
         return Observable.just(Null.INSTANCE);

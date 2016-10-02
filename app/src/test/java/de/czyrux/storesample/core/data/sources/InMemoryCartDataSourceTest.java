@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.czyrux.storesample.core.domain.cart.Cart;
-import de.czyrux.storesample.core.domain.cart.CartArticle;
-import de.czyrux.storesample.test.CartArticleFakeCreator;
+import de.czyrux.storesample.core.domain.cart.CartProduct;
+import de.czyrux.storesample.test.CartProductFakeCreator;
 import de.czyrux.storesample.test.CartFakeCreator;
 import de.czyrux.storesample.util.Null;
 import rx.observers.TestSubscriber;
@@ -32,13 +32,13 @@ public class InMemoryCartDataSourceTest {
     }
 
     @Test
-    public void addArticle_Should_AddValuesToCart() {
+    public void addProduct_Should_AddValuesToCart() {
 
-        CartArticle article = CartArticleFakeCreator.createArticle("Sku1", 2);
+        CartProduct product = CartProductFakeCreator.createProduct("Sku1", 2);
 
         TestSubscriber<Null> addTestSubscriber = new TestSubscriber<>();
 
-        cartDataSource.addArticle(article)
+        cartDataSource.addProduct(product)
                 .subscribe(addTestSubscriber);
 
         addTestSubscriber.assertNoErrors();
@@ -49,22 +49,22 @@ public class InMemoryCartDataSourceTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertCompleted();
-        testSubscriber.assertValue(CartFakeCreator.cartWithElements(article));
+        testSubscriber.assertValue(CartFakeCreator.cartWithElements(product));
         testSubscriber.assertNoErrors();
     }
 
     @Test
     public void remove_Should_RemoveValuesFromCart() {
 
-        CartArticle article = CartArticleFakeCreator.createArticle("Sku1", 2);
-        CartArticle article2 = CartArticleFakeCreator.createArticle("Sku2", 3);
-        cartDataSource.addArticle(article);
-        cartDataSource.addArticle(article2);
+        CartProduct product = CartProductFakeCreator.createProduct("Sku1", 2);
+        CartProduct product2 = CartProductFakeCreator.createProduct("Sku2", 3);
+        cartDataSource.addProduct(product);
+        cartDataSource.addProduct(product2);
 
-        CartArticle articleToRemove = CartArticleFakeCreator.createArticle("Sku2", 1);
+        CartProduct productToRemove = CartProductFakeCreator.createProduct("Sku2", 1);
 
         TestSubscriber<Null> removeTestSubscriber = new TestSubscriber<>();
-        cartDataSource.removeArticle(articleToRemove)
+        cartDataSource.removeProduct(productToRemove)
                 .subscribe(removeTestSubscriber);
 
         TestSubscriber<Cart> testSubscriber = new TestSubscriber<>();
@@ -75,7 +75,7 @@ public class InMemoryCartDataSourceTest {
         removeTestSubscriber.assertCompleted();
 
         testSubscriber.assertCompleted();
-        testSubscriber.assertValue(CartFakeCreator.cartWithElements(article, CartArticleFakeCreator.createArticle("Sku2", 2)));
+        testSubscriber.assertValue(CartFakeCreator.cartWithElements(product, CartProductFakeCreator.createProduct("Sku2", 2)));
         testSubscriber.assertNoErrors();
     }
 }

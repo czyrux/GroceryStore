@@ -6,10 +6,10 @@ import java.util.List;
 public class Cart {
 
     public static final Cart EMPTY = new Cart(Collections.emptyList());
-    public final List<CartArticle> articles;
+    public final List<CartProduct> products;
 
-    public Cart(List<CartArticle> articles) {
-        this.articles = articles;
+    public Cart(List<CartProduct> products) {
+        this.products = products;
     }
 
     @Override
@@ -19,12 +19,12 @@ public class Cart {
 
         Cart cart = (Cart) o;
 
-        return articles != null ? articles.equals(cart.articles) : cart.articles == null;
+        return products != null ? products.equals(cart.products) : cart.products == null;
 
     }
 
     @Override
     public int hashCode() {
-        return articles != null ? articles.hashCode() : 0;
+        return products != null ? products.hashCode() : 0;
     }
 }

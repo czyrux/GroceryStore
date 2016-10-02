@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import de.czyrux.storesample.test.CartArticleFakeCreator;
+import de.czyrux.storesample.test.CartProductFakeCreator;
 import de.czyrux.storesample.test.CartFakeCreator;
 
 import static org.junit.Assert.assertEquals;
@@ -18,142 +18,142 @@ public class CartBuilderTest {
         Cart cart = CartBuilder.from(new Cart(null))
                 .build();
 
-        assertTrue(cart.articles.isEmpty());
+        assertTrue(cart.products.isEmpty());
     }
 
     @Test
     public void should_createAnEmptyCart_When_NoCartProvided() {
         Cart cart = CartBuilder.empty().build();
 
-        assertTrue(cart.articles.isEmpty());
+        assertTrue(cart.products.isEmpty());
     }
 
     @Test
     public void should_createACartWithInitialItems_When_CartProvided() {
 
-        CartArticle article1 = CartArticleFakeCreator.createArticle("Sku1");
-        CartArticle article2 = CartArticleFakeCreator.createArticle("Sku2");
+        CartProduct product1 = CartProductFakeCreator.createProduct("Sku1");
+        CartProduct product2 = CartProductFakeCreator.createProduct("Sku2");
 
-        Cart sourceCart = CartFakeCreator.cartWithElements(article1, article2);
+        Cart sourceCart = CartFakeCreator.cartWithElements(product1, product2);
 
         Cart resultCart = CartBuilder.from(sourceCart).build();
 
-        assertEquals(2, resultCart.articles.size());
+        assertEquals(2, resultCart.products.size());
     }
 
     @Test
-    public void addArticle_Should_addArticleToEmptyList() {
+    public void addProduct_Should_addProductToEmptyList() {
 
-        CartArticle article2 = CartArticleFakeCreator.createArticle("Sku2");
+        CartProduct product = CartProductFakeCreator.createProduct("Sku2");
 
         Cart resultCart = CartBuilder.empty()
-                .addArticle(article2)
+                .addProduct(product)
                 .build();
 
-        assertEquals(1, resultCart.articles.size());
+        assertEquals(1, resultCart.products.size());
     }
 
     @Test
-    public void addArticle_Should_addArticleToExistingList() {
+    public void addProduct_Should_addProductToExistingList() {
 
-        CartArticle article1 = CartArticleFakeCreator.createArticle("Sku1");
-        Cart sourceCart = CartFakeCreator.cartWithElements(article1);
+        CartProduct product1 = CartProductFakeCreator.createProduct("Sku1");
+        Cart sourceCart = CartFakeCreator.cartWithElements(product1);
 
-        CartArticle article2 = CartArticleFakeCreator.createArticle("Sku2");
+        CartProduct product2 = CartProductFakeCreator.createProduct("Sku2");
 
         Cart resultCart = CartBuilder.from(sourceCart)
-                .addArticle(article2)
+                .addProduct(product2)
                 .build();
 
-        assertEquals(2, resultCart.articles.size());
+        assertEquals(2, resultCart.products.size());
     }
 
     @Test
-    public void addArticle_Should_IncreaseQuantity_When_ArticleAlreadyInList() {
+    public void addProduct_Should_IncreaseQuantity_When_ProductAlreadyInList() {
 
         String SKU = "Sku1";
-        CartArticle article1 = CartArticleFakeCreator.createArticle(SKU);
-        CartArticle article2 = CartArticleFakeCreator.createArticle("Sku2");
+        CartProduct product1 = CartProductFakeCreator.createProduct(SKU);
+        CartProduct product2 = CartProductFakeCreator.createProduct("Sku2");
 
-        Cart sourceCart = CartFakeCreator.cartWithElements(article1, article2);
+        Cart sourceCart = CartFakeCreator.cartWithElements(product1, product2);
 
         Cart resultCart = CartBuilder.from(sourceCart)
-                .addArticle(article1)
+                .addProduct(product1)
                 .build();
 
-        int expectedArticle1Quantity = article1.quantity * 2;
+        int expectedproduct1Quantity = product1.quantity * 2;
 
-        assertEquals(2, resultCart.articles.size());
-        assertEquals(expectedArticle1Quantity, getArticleBySku(resultCart.articles, SKU).quantity);
+        assertEquals(2, resultCart.products.size());
+        assertEquals(expectedproduct1Quantity, getProductBySku(resultCart.products, SKU).quantity);
     }
 
     @Test
-    public void removeArticle_Should_DoNothing_When_ArticleNoInList() {
+    public void removeProduct_Should_DoNothing_When_ProductNotInList() {
 
         String SKU = "Sku1";
-        CartArticle article1 = CartArticleFakeCreator.createArticle(SKU);
-        Cart sourceCart = CartFakeCreator.cartWithElements(article1);
+        CartProduct product1 = CartProductFakeCreator.createProduct(SKU);
+        Cart sourceCart = CartFakeCreator.cartWithElements(product1);
 
-        CartArticle article2 = CartArticleFakeCreator.createArticle("Sku2");
+        CartProduct product2 = CartProductFakeCreator.createProduct("Sku2");
 
         Cart resultCart = CartBuilder.from(sourceCart)
-                .removeArticle(article2)
+                .removeProduct(product2)
                 .build();
 
-        assertEquals(1, resultCart.articles.size());
+        assertEquals(1, resultCart.products.size());
     }
 
     @Test
-    public void removeArticle_Should_RemoveArticle_When_OnlyOneAvailable() {
+    public void removeProduct_Should_RemoveProduct_When_OnlyOneAvailable() {
 
         String SKU = "Sku1";
-        CartArticle article1 = CartArticleFakeCreator.createArticle(SKU, 1);
+        CartProduct product1 = CartProductFakeCreator.createProduct(SKU, 1);
 
-        Cart sourceCart = CartFakeCreator.cartWithElements(article1);
+        Cart sourceCart = CartFakeCreator.cartWithElements(product1);
 
         Cart resultCart = CartBuilder.from(sourceCart)
-                .removeArticle(article1)
+                .removeProduct(product1)
                 .build();
 
-        assertTrue(resultCart.articles.isEmpty());
+        assertTrue(resultCart.products.isEmpty());
     }
 
     @Test
-    public void removeArticle_Should_RemoveArticle_When_IsBiggerThanTheOneInCart() {
+    public void removeProduct_Should_RemoveProduct_When_IsBiggerThanTheOneInCart() {
 
         String SKU = "Sku1";
-        CartArticle article1 = CartArticleFakeCreator.createArticle(SKU, 2);
-        Cart sourceCart = CartFakeCreator.cartWithElements(article1);
+        CartProduct product1 = CartProductFakeCreator.createProduct(SKU, 2);
+        Cart sourceCart = CartFakeCreator.cartWithElements(product1);
 
-        CartArticle cartWithBigQuantity = CartArticleFakeCreator.createArticle(SKU, 100);
+        CartProduct cartWithBigQuantity = CartProductFakeCreator.createProduct(SKU, 100);
 
         Cart resultCart = CartBuilder.from(sourceCart)
-                .removeArticle(cartWithBigQuantity)
+                .removeProduct(cartWithBigQuantity)
                 .build();
 
-        assertTrue(resultCart.articles.isEmpty());
+        assertTrue(resultCart.products.isEmpty());
     }
 
     @Test
-    public void removeArticle_Should_DecreaseQuantity_When_ArticleHasSeveralElements() {
+    public void removeProduct_Should_DecreaseQuantity_When_ProductHasSeveralElements() {
 
         String SKU = "Sku1";
-        CartArticle article1 = CartArticleFakeCreator.createArticle(SKU, 2);
-        Cart sourceCart = CartFakeCreator.cartWithElements(article1);
+        CartProduct product = CartProductFakeCreator.createProduct(SKU, 2);
+        Cart sourceCart = CartFakeCreator.cartWithElements(product);
 
-        CartArticle articleToRemove = CartArticleFakeCreator.createArticle(SKU, 1);
+        CartProduct productToRemove = CartProductFakeCreator.createProduct(SKU, 1);
 
         Cart resultCart = CartBuilder.from(sourceCart)
-                .removeArticle(articleToRemove)
+                .removeProduct(productToRemove)
                 .build();
 
-        assertEquals(1, getArticleBySku(resultCart.articles, SKU).quantity);
+        assertEquals(1, getProductBySku(resultCart.products, SKU).quantity);
     }
 
-    private CartArticle getArticleBySku(List<CartArticle> articles, String sku) {
-        for (CartArticle article : articles) {
-            if (sku.equalsIgnoreCase(article.sku)) {
-                return article;
+    private CartProduct getProductBySku(List<CartProduct> products, String sku) {
+        for (CartProduct product : products) {
+            if (sku.equalsIgnoreCase(product.sku)) {
+                return product;
             }
         }
         return null;

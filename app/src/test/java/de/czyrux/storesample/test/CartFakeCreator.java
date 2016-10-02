@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import de.czyrux.storesample.core.domain.cart.Cart;
-import de.czyrux.storesample.core.domain.cart.CartArticle;
+import de.czyrux.storesample.core.domain.cart.CartProduct;
 
 public class CartFakeCreator {
 
@@ -12,7 +12,7 @@ public class CartFakeCreator {
         return new Cart(Collections.emptyList());
     }
 
-    public static Cart cartWithElements(CartArticle... articles) {
-        return new Cart(Arrays.asList(articles));
+    public static Cart cartWithElements(CartProduct... products) {
+        return new Cart(Arrays.asList(products));
     }
 }

@@ -10,46 +10,46 @@ public class CartBuilder {
     private static final int DEFAULT_CAPACITY = 10;
     private static final int NOT_FOUND = -1;
 
-    private final List<CartArticle> articles;
+    private final List<CartProduct> products;
 
-    private CartBuilder(List<CartArticle> articles) {
-        this.articles = articles;
+    private CartBuilder(List<CartProduct> products) {
+        this.products = products;
     }
 
     public static CartBuilder from(Cart cart) {
-        if (cart.articles == null) {
+        if (cart.products == null) {
             return empty();
         }
 
-        return new CartBuilder(new ArrayList<>(cart.articles));
+        return new CartBuilder(new ArrayList<>(cart.products));
     }
 
     public static CartBuilder empty() {
         return new CartBuilder(new ArrayList<>(DEFAULT_CAPACITY));
     }
 
-    public CartBuilder addArticle(CartArticle article) {
-        int index = getArticleIndexBySku(article.sku);
+    public CartBuilder addProduct(CartProduct product) {
+        int index = getProductIndexBySku(product.sku);
         if (index != NOT_FOUND) {
-            CartArticle includedArticle = articles.get(index);
-            int totalQuantity = article.quantity + includedArticle.quantity;
-            articles.set(index, new CartArticle(article.sku, article.title, article.imageUrl, article.price, totalQuantity));
+            CartProduct includedProduct = products.get(index);
+            int totalQuantity = product.quantity + includedProduct.quantity;
+            products.set(index, new CartProduct(product.sku, product.title, product.imageUrl, product.price, totalQuantity));
         } else {
-            articles.add(article);
+            products.add(product);
         }
 
         return this;
     }
 
-    public CartBuilder removeArticle(CartArticle article) {
-        int index = getArticleIndexBySku(article.sku);
+    public CartBuilder removeProduct(CartProduct product) {
+        int index = getProductIndexBySku(product.sku);
         if (index != NOT_FOUND) {
-            CartArticle includedArticle = articles.get(index);
-            int newQuantity = includedArticle.quantity - article.quantity;
+            CartProduct includedProduct = products.get(index);
+            int newQuantity = includedProduct.quantity - product.quantity;
             if (newQuantity <= 0) {
-                articles.remove(index);
+                products.remove(index);
             } else {
-                articles.set(index, new CartArticle(article.sku, article.title, article.imageUrl, article.price, newQuantity));
+                products.set(index, new CartProduct(product.sku, product.title, product.imageUrl, product.price, newQuantity));
             }
         }
 
@@ -57,9 +57,9 @@ public class CartBuilder {
     }
 
     @Nullable
-    private int getArticleIndexBySku(String sku) {
-        for (int i = 0; i < articles.size(); i++) {
-            if (sku.equalsIgnoreCase(articles.get(i).sku)) {
+    private int getProductIndexBySku(String sku) {
+        for (int i = 0; i < products.size(); i++) {
+            if (sku.equalsIgnoreCase(products.get(i).sku)) {
                 return i;
             }
         }
@@ -68,6 +68,6 @@ public class CartBuilder {
     }
 
     public Cart build() {
-        return new Cart(articles);
+        return new Cart(products);
     }
 }

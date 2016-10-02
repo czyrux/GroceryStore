@@ -7,7 +7,7 @@ public interface CartDataSource {
 
     Observable<Cart> getCart();
 
-    Observable<Null> addArticle(CartArticle cartArticle);
+    Observable<Null> addProduct(CartProduct cartProduct);
 
-    Observable<Null> removeArticle(CartArticle cartArticle);
+    Observable<Null> removeProduct(CartProduct cartProduct);
 }

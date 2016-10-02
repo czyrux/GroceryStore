@@ -17,13 +17,13 @@ public class CartService {
                 .doOnNext(cartStore::publish);
     }
 
-    public Observable<Cart> addArticle(CartArticle cartArticle) {
-        return cartDataSource.addArticle(cartArticle)
+    public Observable<Cart> addProduct(CartProduct cartProduct) {
+        return cartDataSource.addProduct(cartProduct)
                 .flatMap(n -> getCart());
     }
 
-    public Observable<Cart> removeArticle(CartArticle cartArticle) {
-        return cartDataSource.removeArticle(cartArticle)
+    public Observable<Cart> removeProduct(CartProduct cartProduct) {
+        return cartDataSource.removeProduct(cartProduct)
                 .flatMap(n -> getCart());
     }
 }

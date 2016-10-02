@@ -1,12 +1,12 @@
 package de.czyrux.storesample.core.domain.cart;
 
-import de.czyrux.storesample.core.domain.article.Article;
+import de.czyrux.storesample.core.domain.product.Product;
 
-public class CartArticle extends Article {
+public class CartProduct extends Product {
 
     public final int quantity;
 
-    public CartArticle(String sku, String title, String imageUrl, double price, int quantity) {
+    public CartProduct(String sku, String title, String imageUrl, double price, int quantity) {
         super(sku, title, imageUrl, price);
         this.quantity = quantity;
     }
@@ -17,9 +17,9 @@ public class CartArticle extends Article {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        CartArticle article = (CartArticle) o;
+        CartProduct product = (CartProduct) o;
 
-        return quantity == article.quantity;
+        return quantity == product.quantity;
 
     }
 
@@ -32,7 +32,7 @@ public class CartArticle extends Article {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CartArticle{");
+        final StringBuilder sb = new StringBuilder("CartProduct{");
         sb.append("quantity=").append(quantity);
         sb.append('}');
         return sb.toString();

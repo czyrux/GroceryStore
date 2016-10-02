@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
-import de.czyrux.storesample.test.CartArticleFakeCreator;
+import de.czyrux.storesample.test.CartProductFakeCreator;
 import de.czyrux.storesample.test.CartFakeCreator;
 import rx.observers.TestSubscriber;
 
@@ -71,9 +71,9 @@ public class CartStoreTest {
 
 
     private Cart createFakeCart() {
-        CartArticle article = CartArticleFakeCreator.createArticle("sk1", 1);
-        CartArticle article2 = CartArticleFakeCreator.createArticle("sk2", 1);
-        return CartFakeCreator.cartWithElements(article, article2);
+        CartProduct product = CartProductFakeCreator.createProduct("sk1", 1);
+        CartProduct product2 = CartProductFakeCreator.createProduct("sk2", 1);
+        return CartFakeCreator.cartWithElements(product, product2);
     }
 
 }
