@@ -35,7 +35,7 @@ android {
 
 dependencies {
 
-    final SUPPORT_LIBRARY_VERSION = '24.1.1'
+    final SUPPORT_LIBRARY_VERSION = '24.2.1'
 
     final MOCKITO_VERSION = '1.10.19'
     final JUNIT_VERSION = '4.12'
