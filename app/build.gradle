@@ -6,7 +6,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "de.czyrux.storesample"
+        applicationId "de.czyrux.supermarket"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
