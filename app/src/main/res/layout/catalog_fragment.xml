@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:text="@string/catalog_empty"
         android:layout_gravity="center"
-        style="@android:style/TextAppearance.DeviceDefault.Large"/>
+        style="@android:style/TextAppearance.DeviceDefault.Large"
+        android:visibility="gone"/>
 
     <ProgressBar
         android:id="@+id/catalog_progressbar"

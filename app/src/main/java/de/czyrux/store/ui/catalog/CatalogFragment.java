@@ -21,6 +21,7 @@ public class CatalogFragment extends BaseFragment {
 
     @BindView(R.id.catalog_emptyView)
     View emptyView;
+
     @BindView(R.id.catalog_progressbar)
     ProgressBar progressBar;
 
@@ -61,5 +62,11 @@ public class CatalogFragment extends BaseFragment {
 
     private void onProductResponse(ProductResponse productResponse) {
         Toast.makeText(getContext(), "Catalog is empty: " + productResponse.isEmpty(), Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
+        if (productResponse.isEmpty()) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            // TODO adapter code
+        }
     }
 }
