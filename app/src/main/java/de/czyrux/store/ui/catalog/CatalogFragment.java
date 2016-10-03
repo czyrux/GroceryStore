@@ -1,14 +1,11 @@
 package de.czyrux.store.ui.catalog;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import de.czyrux.store.R;
+import de.czyrux.store.ui.base.BaseFragment;
 
-public class CatalogFragment extends Fragment {
+public class CatalogFragment extends BaseFragment {
 
     public static CatalogFragment newInstance() {
         CatalogFragment fragment = new CatalogFragment();
@@ -21,8 +18,7 @@ public class CatalogFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.catalog_fragment, container, false);
+    protected int layoutId() {
+        return R.layout.catalog_fragment;
     }
 }
