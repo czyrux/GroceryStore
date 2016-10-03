@@ -6,37 +6,50 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.BindView;
 import de.czyrux.store.R;
+import de.czyrux.store.ui.base.BaseActivity;
 import de.czyrux.store.ui.cart.CartFragment;
 import de.czyrux.store.ui.catalog.CatalogFragment;
 import de.czyrux.store.ui.util.PlaceholderFragment;
 
-public class GroceryStoreActivity extends AppCompatActivity {
+public class GroceryStoreActivity extends BaseActivity {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.grocery_store_viewpager)
+    ViewPager viewPager;
+
+    @BindView(R.id.grocery_store_tabs)
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.grocery_store_activity);
         setupViews();
     }
 
+    @Override
+    protected int layoutId() {
+        return R.layout.grocery_store_activity;
+    }
+
     private void setupViews() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         SectionsPagerAdapter tabsSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        ViewPager viewPager = (ViewPager) findViewById(R.id.grocery_store_viewpager);
+        viewPager = (ViewPager) findViewById(R.id.grocery_store_viewpager);
         viewPager.setAdapter(tabsSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.grocery_store_tabs);
+        tabLayout = (TabLayout) findViewById(R.id.grocery_store_tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

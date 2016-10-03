@@ -1,14 +1,11 @@
 package de.czyrux.store.ui.cart;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import de.czyrux.store.R;
+import de.czyrux.store.ui.base.BaseFragment;
 
-public class CartFragment extends Fragment {
+public class CartFragment extends BaseFragment {
 
     public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
@@ -21,8 +18,7 @@ public class CartFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.cart_fragment, container, false);
+    protected int layoutId() {
+        return R.layout.cart_fragment;
     }
 }
