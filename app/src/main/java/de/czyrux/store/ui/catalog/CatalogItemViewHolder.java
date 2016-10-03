@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -37,5 +39,11 @@ class CatalogItemViewHolder extends RecyclerView.ViewHolder {
         String formattedPrice = NumberFormat.getNumberInstance(Locale.getDefault()).format(product.price);
         price.setText(String.format("%s €", formattedPrice));
         itemView.setOnClickListener(v -> listListener.onProductClicked(product));
+
+        Picasso.with(itemView.getContext())
+                .load(product.imageUrl)
+                .centerCrop()
+                .fit()
+                .into(image);
     }
 }

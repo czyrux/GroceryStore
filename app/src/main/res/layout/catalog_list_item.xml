@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackgroundBorderless"
@@ -10,24 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/catalog_item_image_height"
         android:layout_gravity="center_horizontal"
-        android:background="@android:color/darker_gray"
         android:layout_marginBottom="@dimen/catalog_item_image_top_bottom"
         android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/catalog_item_name"
-        style="@android:style/TextAppearance.DeviceDefault.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/catalog_empty" />
-
-    <TextView
-        android:id="@+id/catalog_item_price"
         style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/catalog_empty" />
+        tools:text="A product name" />
+
+    <TextView
+        android:id="@+id/catalog_item_price"
+        style="@android:style/TextAppearance.DeviceDefault.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        tools:text="89,45 €"
+        android:textColor="@color/colorPrimary"/>
 
 </LinearLayout>
