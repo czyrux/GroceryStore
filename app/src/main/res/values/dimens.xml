@@ -9,7 +9,7 @@
 
     <!-- Catalog -->
     <dimen name="catalog_item_image_height">280dp</dimen>
-    <dimen name="catalog_item_padding">@dimen/padding_large</dimen>
-    <dimen name="catalog_item_image_top_bottom">@dimen/padding_large</dimen>
+    <dimen name="catalog_item_padding">@dimen/padding_normal</dimen>
+    <dimen name="catalog_item_image_top_bottom">@dimen/padding_normal</dimen>
 
 </resources>

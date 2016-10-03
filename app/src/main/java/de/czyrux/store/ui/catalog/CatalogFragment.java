@@ -2,6 +2,7 @@ package de.czyrux.store.ui.catalog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,6 +22,8 @@ import rx.schedulers.Schedulers;
 
 public class CatalogFragment extends BaseFragment implements CatalogListener {
 
+    private static final int GRID_COLUMNS = 2;
+    
     @BindView(R.id.catalog_emptyView)
     View emptyView;
 
@@ -57,7 +60,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), GRID_COLUMNS, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override

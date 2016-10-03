@@ -42,7 +42,7 @@ class CatalogItemViewHolder extends RecyclerView.ViewHolder {
 
         Picasso.with(itemView.getContext())
                 .load(product.imageUrl)
-                .centerCrop()
+                .centerInside()
                 .fit()
                 .into(image);
     }
