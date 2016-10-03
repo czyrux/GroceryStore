@@ -2,13 +2,15 @@ package de.czyrux.store.ui.catalog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import de.czyrux.store.R;
+import de.czyrux.store.core.domain.product.Product;
 import de.czyrux.store.core.domain.product.ProductResponse;
 import de.czyrux.store.core.domain.product.ProductService;
 import de.czyrux.store.inject.Injector;
@@ -17,7 +19,7 @@ import de.czyrux.store.util.RxUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class CatalogFragment extends BaseFragment {
+public class CatalogFragment extends BaseFragment implements CatalogListener {
 
     @BindView(R.id.catalog_emptyView)
     View emptyView;
@@ -52,6 +54,13 @@ public class CatalogFragment extends BaseFragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         addSubscritiption(productService.getAllCatalog()
@@ -61,12 +70,18 @@ public class CatalogFragment extends BaseFragment {
     }
 
     private void onProductResponse(ProductResponse productResponse) {
-        Toast.makeText(getContext(), "Catalog is empty: " + productResponse.isEmpty(), Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.GONE);
         if (productResponse.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
         } else {
-            // TODO adapter code
+            CatalogAdapter adapter = new CatalogAdapter(this);
+            adapter.setProductList(productResponse.getProducts());
+            recyclerView.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void onProductClicked(Product product) {
+        Toast.makeText(getContext(), product.title, Toast.LENGTH_SHORT).show();
     }
 }
