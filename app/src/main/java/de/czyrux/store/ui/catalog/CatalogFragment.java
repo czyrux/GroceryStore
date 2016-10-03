@@ -3,7 +3,11 @@ package de.czyrux.store.ui.catalog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import butterknife.BindView;
 import de.czyrux.store.R;
 import de.czyrux.store.core.domain.product.ProductResponse;
 import de.czyrux.store.core.domain.product.ProductService;
@@ -14,6 +18,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class CatalogFragment extends BaseFragment {
+
+    @BindView(R.id.catalog_emptyView)
+    View emptyView;
+    @BindView(R.id.catalog_progressbar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.catalog_recyclerview)
+    RecyclerView recyclerView;
 
     private ProductService productService;
 

@@ -4,4 +4,9 @@
     <!-- Placeholder -->
 
     <string name="placeholder_text">Hello World from section: %1$d</string>
+
+    <!-- Catalog -->
+
+    <string name="catalog_empty">No elements to show :(</string>
+
 </resources>
