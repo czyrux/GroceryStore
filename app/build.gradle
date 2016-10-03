@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -51,6 +52,8 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.8'
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
 
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
     // ---- UNIT TEST CONFIGURATION
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
