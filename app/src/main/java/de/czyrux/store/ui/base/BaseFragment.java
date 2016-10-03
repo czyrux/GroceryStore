@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 public abstract class BaseFragment extends Fragment {
 
+    private final CompositeSubscription subscriptions = new CompositeSubscription();
     private Unbinder unbinder;
 
     @Override
@@ -30,4 +33,13 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        subscriptions.clear();
+    }
+
+    protected final void addSubscritiption(Subscription subscription) {
+        subscriptions.add(subscription);
+    }
 }
