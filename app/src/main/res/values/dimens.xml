@@ -12,4 +12,14 @@
     <dimen name="catalog_item_padding">@dimen/padding_normal</dimen>
     <dimen name="catalog_item_image_top_bottom">@dimen/padding_normal</dimen>
 
+    <!-- Cart -->
+    <dimen name="cart_item_image_height">120dp</dimen>
+    <dimen name="cart_item_image_width">100dp</dimen>
+    <dimen name="cart_item_image_side_margin">@dimen/padding_large</dimen>
+    <dimen name="cart_item_padding">@dimen/padding_normal</dimen>
+    <dimen name="cart_checkout_button_padding">@dimen/padding_large</dimen>
+    <dimen name="cart_checkout_padding_left">@dimen/padding_large</dimen>
+    <dimen name="cart_checkout_padding_right">@dimen/padding_normal</dimen>
+    <dimen name="cart_checkout_padding_top_bottom">@dimen/padding_normal</dimen>
+
 </resources>

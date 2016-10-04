@@ -1,0 +1,50 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:padding="@dimen/cart_item_padding">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/cart_item_imageview"
+            android:layout_width="@dimen/cart_item_image_width"
+            android:layout_height="@dimen/cart_item_image_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="@dimen/cart_item_image_side_margin" />
+
+        <TextView
+            android:id="@+id/cart_item_name"
+            style="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/cart_item_imageview"
+            android:maxLines="2"
+            tools:text="A product name" />
+
+        <TextView
+            android:id="@+id/cart_item_price"
+            style="@android:style/TextAppearance.DeviceDefault.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cart_item_name"
+            android:layout_toRightOf="@+id/cart_item_imageview"
+            android:textColor="@color/colorPrimary"
+            tools:text="89,45 €" />
+
+        <TextView
+            android:id="@+id/cart_item_quantity"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cart_item_price"
+            android:layout_toRightOf="@+id/cart_item_imageview"
+            tools:text="Quantity: 1" />
+
+    </RelativeLayout>
+
+</FrameLayout>

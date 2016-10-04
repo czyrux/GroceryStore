@@ -9,4 +9,11 @@
 
     <string name="catalog_empty">No elements to show :(</string>
 
+    <!-- Cart -->
+
+    <string name="cart_empty">Nothing added in the shopping cart.</string>
+    <string name="cart_checkout">Checkout</string>
+    <string name="cart_checkout_total">Total:</string>
+    <string name="cart_item_quantity">Quantity: %1$d</string>
+
 </resources>
