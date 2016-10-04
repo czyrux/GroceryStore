@@ -77,6 +77,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
         if (productResponse.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
         } else {
+            emptyView.setVisibility(View.GONE);
             CatalogAdapter adapter = new CatalogAdapter(this);
             adapter.setProductList(productResponse.getProducts());
             recyclerView.setAdapter(adapter);

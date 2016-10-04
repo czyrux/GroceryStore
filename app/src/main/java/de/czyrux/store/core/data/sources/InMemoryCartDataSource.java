@@ -13,6 +13,9 @@ public class InMemoryCartDataSource implements CartDataSource {
 
     public InMemoryCartDataSource() {
         this.cart = Cart.EMPTY;
+
+        // FIXME
+        this.cart = CartProviderScaffolding.getACartWithProducts();
     }
 
     @Override

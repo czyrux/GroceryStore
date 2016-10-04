@@ -1,4 +1,4 @@
-package de.czyrux.store.ui.catalog;
+package de.czyrux.store.ui.cart;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,32 +10,38 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.czyrux.store.R;
-import de.czyrux.store.core.domain.product.Product;
+import de.czyrux.store.core.domain.cart.CartProduct;
 import de.czyrux.store.ui.util.PriceFormatter;
 
-class CatalogItemViewHolder extends RecyclerView.ViewHolder {
+class CartItemViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.catalog_item_imageview)
+    @BindView(R.id.cart_item_imageview)
     ImageView image;
 
-    @BindView(R.id.catalog_item_name)
+    @BindView(R.id.cart_item_name)
     TextView name;
 
-    @BindView(R.id.catalog_item_price)
+    @BindView(R.id.cart_item_price)
     TextView price;
 
-    private final CatalogListener listListener;
+    @BindView(R.id.cart_item_quantity)
+    TextView quantity;
 
-    CatalogItemViewHolder(View view, CatalogListener listListener) {
+    private final CartListener listListener;
+
+    CartItemViewHolder(View view, CartListener listListener) {
         super(view);
         this.listListener = listListener;
         ButterKnife.bind(this, view);
     }
 
-    public void bind(Product product) {
+    public void bind(CartProduct product) {
         name.setText(product.title);
         price.setText(PriceFormatter.format(product.price));
-        itemView.setOnClickListener(v -> listListener.onProductClicked(product));
+        itemView.setOnClickListener(v -> listListener.onCartProductClicked(product));
+
+        String quantityFormatted = String.format(itemView.getResources().getString(R.string.cart_item_quantity), product.quantity);
+        quantity.setText(quantityFormatted);
 
         Picasso.with(itemView.getContext())
                 .load(product.imageUrl)
