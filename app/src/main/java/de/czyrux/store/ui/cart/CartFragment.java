@@ -9,9 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.czyrux.store.R;
@@ -20,6 +17,7 @@ import de.czyrux.store.core.domain.cart.CartProduct;
 import de.czyrux.store.core.domain.cart.CartService;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
+import de.czyrux.store.ui.util.PriceFormatter;
 import de.czyrux.store.util.RxUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -94,12 +92,11 @@ public class CartFragment extends BaseFragment implements CartListener {
             recyclerView.setAdapter(adapter);
 
             double totalPrice = 0;
-            for(CartProduct product: cart.products) {
+            for (CartProduct product : cart.products) {
                 totalPrice += product.price;
             }
 
-            String formattedPrice = NumberFormat.getNumberInstance(Locale.getDefault()).format(totalPrice);
-            checkoutTotal.setText(String.format("%s €", formattedPrice));
+            checkoutTotal.setText(PriceFormatter.format(totalPrice));
         }
     }
 

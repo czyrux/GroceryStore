@@ -7,13 +7,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.czyrux.store.R;
 import de.czyrux.store.core.domain.product.Product;
+import de.czyrux.store.ui.util.PriceFormatter;
 
 class CatalogItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -36,8 +34,7 @@ class CatalogItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Product product) {
         name.setText(product.title);
-        String formattedPrice = NumberFormat.getNumberInstance(Locale.getDefault()).format(product.price);
-        price.setText(String.format("%s €", formattedPrice));
+        price.setText(PriceFormatter.format(product.price));
         itemView.setOnClickListener(v -> listListener.onProductClicked(product));
 
         Picasso.with(itemView.getContext())

@@ -7,13 +7,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.czyrux.store.R;
 import de.czyrux.store.core.domain.cart.CartProduct;
+import de.czyrux.store.ui.util.PriceFormatter;
 
 class CartItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -39,8 +37,7 @@ class CartItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(CartProduct product) {
         name.setText(product.title);
-        String formattedPrice = NumberFormat.getNumberInstance(Locale.getDefault()).format(product.price);
-        price.setText(String.format("%s €", formattedPrice));
+        price.setText(PriceFormatter.format(product.price));
         itemView.setOnClickListener(v -> listListener.onCartProductClicked(product));
 
         String quantityFormatted = String.format(itemView.getResources().getString(R.string.cart_item_quantity), product.quantity);
