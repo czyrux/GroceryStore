@@ -3,12 +3,15 @@ package de.czyrux.store.core.data.sources;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.czyrux.store.core.data.util.TimeDelayer;
 import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartProduct;
-import de.czyrux.store.test.CartProductFakeCreator;
 import de.czyrux.store.test.CartFakeCreator;
+import de.czyrux.store.test.CartProductFakeCreator;
 import de.czyrux.store.util.Null;
 import rx.observers.TestSubscriber;
+
+import static org.mockito.Mockito.mock;
 
 public class InMemoryCartDataSourceTest {
 
@@ -16,7 +19,10 @@ public class InMemoryCartDataSourceTest {
 
     @Before
     public void setUp() throws Exception {
-        cartDataSource = new InMemoryCartDataSource();
+
+        TimeDelayer timeDelayer = mock(TimeDelayer.class);
+
+        cartDataSource = new InMemoryCartDataSource(timeDelayer);
     }
 
     @Test
@@ -58,8 +64,8 @@ public class InMemoryCartDataSourceTest {
 
         CartProduct product = CartProductFakeCreator.createProduct("Sku1", 2);
         CartProduct product2 = CartProductFakeCreator.createProduct("Sku2", 3);
-        cartDataSource.addProduct(product);
-        cartDataSource.addProduct(product2);
+        cartDataSource.addProduct(product).subscribe(new TestSubscriber<>());
+        cartDataSource.addProduct(product2).subscribe(new TestSubscriber<>());
 
         CartProduct productToRemove = CartProductFakeCreator.createProduct("Sku2", 1);
 

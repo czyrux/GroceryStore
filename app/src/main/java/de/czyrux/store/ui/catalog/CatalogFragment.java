@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
 
 public class CatalogFragment extends BaseFragment implements CatalogListener {
 
-    private static final int GRID_COLUMNS = 2;
+    private static final int GRID_COLUMNS = 1;
     
     @BindView(R.id.catalog_emptyView)
     View emptyView;
