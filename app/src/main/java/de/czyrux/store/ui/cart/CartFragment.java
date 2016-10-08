@@ -14,6 +14,7 @@ import butterknife.OnClick;
 import de.czyrux.store.R;
 import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartProduct;
+import de.czyrux.store.core.domain.cart.CartProductFactory;
 import de.czyrux.store.core.domain.cart.CartService;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
@@ -72,10 +73,18 @@ public class CartFragment extends BaseFragment implements CartListener {
     @Override
     public void onStart() {
         super.onStart();
+
+        showProgressBar();
         addSubscritiption(cartService.getCart()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onCartResponse, RxUtil.logError()));
+    }
+
+    private void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+        contentView.setVisibility(View.GONE);
     }
 
     private void onCartResponse(Cart cart) {
@@ -102,7 +111,11 @@ public class CartFragment extends BaseFragment implements CartListener {
 
     @Override
     public void onCartProductClicked(CartProduct product) {
-        Toast.makeText(getContext(), product.title, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Removing " + product.title, Toast.LENGTH_SHORT).show();
+        addSubscritiption(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onCartResponse, RxUtil.logError()));
     }
 
     @OnClick(R.id.cart_checkout_button)
