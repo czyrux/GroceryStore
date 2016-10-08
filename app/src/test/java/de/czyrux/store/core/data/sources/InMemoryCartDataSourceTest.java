@@ -64,8 +64,8 @@ public class InMemoryCartDataSourceTest {
 
         CartProduct product = CartProductFakeCreator.createProduct("Sku1", 2);
         CartProduct product2 = CartProductFakeCreator.createProduct("Sku2", 3);
-        cartDataSource.addProduct(product);
-        cartDataSource.addProduct(product2);
+        cartDataSource.addProduct(product).subscribe(new TestSubscriber<>());
+        cartDataSource.addProduct(product2).subscribe(new TestSubscriber<>());
 
         CartProduct productToRemove = CartProductFakeCreator.createProduct("Sku2", 1);
 
