@@ -80,7 +80,7 @@ public class CartFragment extends BaseFragment implements CartListener {
 
         showProgressBar();
 
-        addSubscritiption(cartService.getCart()
+        addSubscritiption(cartService.updateCart()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(RxUtil.emptyObserver()));
