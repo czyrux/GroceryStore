@@ -12,7 +12,7 @@ public class CartStore {
     private final SerializedRelay<Cart, Cart> cartBehaviorSubject;
 
     public CartStore() {
-        this(Cart.EMPTY);
+        this.cartBehaviorSubject = BehaviorRelay.<Cart>create().toSerialized();
     }
 
     @VisibleForTesting
@@ -21,10 +21,11 @@ public class CartStore {
     }
 
     public Observable<Cart> observe() {
-        return cartBehaviorSubject.asObservable();
+        return cartBehaviorSubject.asObservable()
+                .distinctUntilChanged();
     }
 
-    public void publish(Cart cart) {
+    void publish(Cart cart) {
         cartBehaviorSubject.call(cart);
     }
 }

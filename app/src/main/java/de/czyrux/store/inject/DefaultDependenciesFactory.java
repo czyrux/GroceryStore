@@ -12,15 +12,16 @@ import de.czyrux.store.core.domain.product.ProductService;
 public class DefaultDependenciesFactory implements DependenciesFactory {
 
     private final TimeDelayer timeDelayer;
+    private final CartStore cartStore;
 
     public DefaultDependenciesFactory() {
         timeDelayer = new TimeDelayer();
+        cartStore = new CartStore();
     }
 
     @Override
     public CartService createCartService() {
         CartDataSource cartDataSource = new InMemoryCartDataSource(timeDelayer);
-        CartStore cartStore = new CartStore();
         return new CartService(cartDataSource, cartStore);
     }
 
@@ -30,4 +31,8 @@ public class DefaultDependenciesFactory implements DependenciesFactory {
         return new ProductService(productDataSource);
     }
 
+    @Override
+    public CartStore createCartStore() {
+        return cartStore;
+    }
 }

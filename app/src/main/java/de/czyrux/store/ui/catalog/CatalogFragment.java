@@ -11,19 +11,20 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import de.czyrux.store.R;
+import de.czyrux.store.core.domain.cart.CartProduct;
+import de.czyrux.store.core.domain.cart.CartProductFactory;
+import de.czyrux.store.core.domain.cart.CartService;
 import de.czyrux.store.core.domain.product.Product;
 import de.czyrux.store.core.domain.product.ProductResponse;
 import de.czyrux.store.core.domain.product.ProductService;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
 import de.czyrux.store.util.RxUtil;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class CatalogFragment extends BaseFragment implements CatalogListener {
 
     private static final int GRID_COLUMNS = 1;
-    
+
     @BindView(R.id.catalog_emptyView)
     View emptyView;
 
@@ -34,6 +35,8 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     RecyclerView recyclerView;
 
     private ProductService productService;
+
+    private CartService cartService;
 
     public static CatalogFragment newInstance() {
         CatalogFragment fragment = new CatalogFragment();
@@ -54,6 +57,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         productService = Injector.productService();
+        cartService = Injector.cartService();
     }
 
     @Override
@@ -66,26 +70,50 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     @Override
     public void onStart() {
         super.onStart();
+        showProgressBar();
+
         addSubscritiption(productService.getAllCatalog()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(this::onProductResponse, RxUtil.logError()));
     }
 
+    private void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+        recyclerView.setAdapter(null);
+    }
+
     private void onProductResponse(ProductResponse productResponse) {
-        progressBar.setVisibility(View.GONE);
+        hideProgressbar();
         if (productResponse.isEmpty()) {
-            emptyView.setVisibility(View.VISIBLE);
+            showEmptyCatalog();
         } else {
-            emptyView.setVisibility(View.GONE);
-            CatalogAdapter adapter = new CatalogAdapter(this);
-            adapter.setProductList(productResponse.getProducts());
-            recyclerView.setAdapter(adapter);
+            showCatalog(productResponse);
         }
+    }
+
+    private void showCatalog(ProductResponse productResponse) {
+        emptyView.setVisibility(View.GONE);
+        CatalogAdapter adapter = new CatalogAdapter(this);
+        adapter.setProductList(productResponse.getProducts());
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void showEmptyCatalog() {
+        emptyView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressbar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onProductClicked(Product product) {
-        Toast.makeText(getContext(), product.title, Toast.LENGTH_SHORT).show();
+        CartProduct cartProduct = CartProductFactory.newCartProduct(product, 1);
+        addSubscritiption(cartService.addProduct(cartProduct)
+                .compose(RxUtil.applyStandardSchedulers())
+                .subscribe(RxUtil.emptyObserver()));
+
+        Toast.makeText(getContext(), "Adding to cart..." + product.title, Toast.LENGTH_SHORT).show();
     }
 }

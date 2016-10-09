@@ -12,12 +12,22 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import de.czyrux.store.R;
+import de.czyrux.store.core.domain.cart.CartProduct;
+import de.czyrux.store.core.domain.cart.CartStore;
+import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseActivity;
 import de.czyrux.store.ui.cart.CartFragment;
 import de.czyrux.store.ui.catalog.CatalogFragment;
 import de.czyrux.store.ui.util.PlaceholderFragment;
+import de.czyrux.store.util.RxUtil;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class GroceryStoreActivity extends BaseActivity {
+
+    private static final int TABS_COUNT = 2;
+    private static final int CATALOG_TAB_POSITION = 0;
+    private static final int CART_TAB_POSITION = 1;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -28,10 +38,13 @@ public class GroceryStoreActivity extends BaseActivity {
     @BindView(R.id.grocery_store_tabs)
     TabLayout tabLayout;
 
+    private CartStore cartStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupViews();
+        setupDependencies();
     }
 
     @Override
@@ -39,6 +52,7 @@ public class GroceryStoreActivity extends BaseActivity {
         return R.layout.grocery_store_activity;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setupViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,6 +63,34 @@ public class GroceryStoreActivity extends BaseActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.grocery_store_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(CART_TAB_POSITION).setText("Cart");
+        tabLayout.getTabAt(CATALOG_TAB_POSITION).setText("Catalog");
+    }
+
+    private void setupDependencies() {
+        cartStore = Injector.cartStore();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        addSubscritiption(cartStore.observe()
+                .subscribeOn(Schedulers.io())
+                .map(cart -> {
+                    int cartProductsCount = 0;
+                    for (CartProduct product : cart.products) {
+                        cartProductsCount += product.quantity;
+                    }
+                    return cartProductsCount;
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateCartTabTitle, RxUtil.silentError()));
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void updateCartTabTitle(int count) {
+        tabLayout.getTabAt(CART_TAB_POSITION).setText("Cart (" + count + ")");
     }
 
     @Override
@@ -63,10 +105,6 @@ public class GroceryStoreActivity extends BaseActivity {
     }
 
     private static class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        private static final int TABS_COUNT = 2;
-        private static final int CATALOG_TAB_POSITION = 0;
-        private static final int CART_TAB_POSITION = 1;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -86,17 +124,6 @@ public class GroceryStoreActivity extends BaseActivity {
         @Override
         public int getCount() {
             return TABS_COUNT;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case CATALOG_TAB_POSITION:
-                    return "Catalog";
-                case CART_TAB_POSITION:
-                    return "Cart";
-            }
-            return null;
         }
     }
 }

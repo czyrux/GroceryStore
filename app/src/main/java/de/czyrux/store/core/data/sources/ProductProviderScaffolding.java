@@ -19,6 +19,6 @@ class ProductProviderScaffolding {
         Product kiwis = new Product("sku6", "Kiwis", "https://pixabay.com/static/uploads/photo/2014/07/23/11/51/kiwifruit-400143_1280.jpg\n", 4.5);
         Product cucumber = new Product("sku7", "Cucumber", "https://pixabay.com/static/uploads/photo/2015/07/17/13/44/cucumbers-849269_1280.jpg", 0.5);
         Product tomatoes = new Product("sku8", "Tomatoes", "https://pixabay.com/static/uploads/photo/2011/03/16/16/01/tomatoes-5356_1280.jpg", 2.52);
-        return Arrays.asList(ananas, kiwis, oranges, apples, bananas, potatoes, tomatoes, cucumber);
+        return Arrays.asList(ananas, oranges, apples, bananas, kiwis, potatoes, tomatoes, cucumber);
     }
 }
