@@ -71,6 +71,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     public void onStart() {
         super.onStart();
         showProgressBar();
+
         addSubscritiption(productService.getAllCatalog()
                 .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(this::onProductResponse, RxUtil.logError()));
@@ -83,15 +84,27 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     }
 
     private void onProductResponse(ProductResponse productResponse) {
-        progressBar.setVisibility(View.GONE);
+        hideProgressbar();
         if (productResponse.isEmpty()) {
-            emptyView.setVisibility(View.VISIBLE);
+            showEmptyCatalog();
         } else {
-            emptyView.setVisibility(View.GONE);
-            CatalogAdapter adapter = new CatalogAdapter(this);
-            adapter.setProductList(productResponse.getProducts());
-            recyclerView.setAdapter(adapter);
+            showCatalog(productResponse);
         }
+    }
+
+    private void showCatalog(ProductResponse productResponse) {
+        emptyView.setVisibility(View.GONE);
+        CatalogAdapter adapter = new CatalogAdapter(this);
+        adapter.setProductList(productResponse.getProducts());
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void showEmptyCatalog() {
+        emptyView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressbar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
