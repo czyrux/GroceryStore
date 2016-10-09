@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private final CompositeSubscription subscriptions = new CompositeSubscription();
     private Unbinder unbinder;
 
     @Override
@@ -22,9 +25,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int layoutId();
 
     @Override
+    public void onStop() {
+        super.onStop();
+        subscriptions.clear();
+    }
+
+    @Override
     protected void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
     }
 
+    protected final void addSubscritiption(Subscription subscription) {
+        subscriptions.add(subscription);
+    }
 }
