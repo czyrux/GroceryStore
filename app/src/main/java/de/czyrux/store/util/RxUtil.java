@@ -2,12 +2,16 @@ package de.czyrux.store.util;
 
 import android.util.Log;
 
+import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class RxUtil {
 
-    private static final Action1<Throwable> EMPTY_ERROR = throwable -> { };
+    private static final Action1<Throwable> EMPTY_ERROR = throwable -> {
+    };
 
     private static final Action1<Throwable> LOG_ERROR = throwable -> Log.e("Observable", Log.getStackTraceString(throwable));
 
@@ -25,9 +29,11 @@ public class RxUtil {
         }
     };
 
-    private static final Action1 EMPTY = o -> { };
+    private static final Action1 EMPTY = o -> {
+    };
 
-    private RxUtil() { }
+    private RxUtil() {
+    }
 
     public static Action1<Throwable> silentError() {
         return EMPTY_ERROR;
@@ -45,5 +51,10 @@ public class RxUtil {
     @SuppressWarnings("unchecked")
     public static <T> Action1<T> empty() {
         return EMPTY;
+    }
+
+    public static <T> Observable.Transformer<T, T> applyStandardSchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

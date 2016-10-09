@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,8 +21,6 @@ import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
 import de.czyrux.store.ui.util.PriceFormatter;
 import de.czyrux.store.util.RxUtil;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class CartFragment extends BaseFragment implements CartListener {
 
@@ -81,13 +78,11 @@ public class CartFragment extends BaseFragment implements CartListener {
         showProgressBar();
 
         addSubscritiption(cartService.updateCart()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(RxUtil.emptyObserver()));
 
         addSubscritiption(cartStore.observe()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(this::onCartResponse, RxUtil.silentError()));
     }
 
@@ -98,7 +93,6 @@ public class CartFragment extends BaseFragment implements CartListener {
     }
 
     private void onCartResponse(Cart cart) {
-        Log.d("Cart", "onCartResponse");
         hideProgressBar();
         if (cart.products.isEmpty()) {
             showEmptyCart();
@@ -134,10 +128,9 @@ public class CartFragment extends BaseFragment implements CartListener {
 
     @Override
     public void onCartProductClicked(CartProduct product) {
-        Toast.makeText(getContext(), "Removing " + product.title, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Removing... " + product.title, Toast.LENGTH_SHORT).show();
         addSubscritiption(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(RxUtil.emptyObserver()));
     }
 
