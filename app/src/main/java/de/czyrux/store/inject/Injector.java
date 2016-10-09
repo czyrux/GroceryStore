@@ -1,6 +1,7 @@
 package de.czyrux.store.inject;
 
 import de.czyrux.store.core.domain.cart.CartService;
+import de.czyrux.store.core.domain.cart.CartStore;
 import de.czyrux.store.core.domain.product.ProductService;
 
 /**
@@ -10,16 +11,19 @@ public class Injector {
     private static Injector INSTANCE;
     private final CartService cartService;
     private final ProductService productService;
+    private final CartStore cartStore;
 
-    public Injector(CartService cartService, ProductService productService) {
+    public Injector(CartService cartService, ProductService productService, CartStore cartStore) {
         this.cartService = cartService;
         this.productService = productService;
+        this.cartStore = cartStore;
     }
 
     public static void using(DependenciesFactory factory) {
         CartService cartService = factory.createCartService();
         ProductService productService = factory.createProductService();
-        INSTANCE = new Injector(cartService, productService);
+        CartStore cartStore = factory.createCartStore();
+        INSTANCE = new Injector(cartService, productService, cartStore);
     }
 
     private static Injector instance() {
@@ -32,4 +36,8 @@ public class Injector {
     public static CartService cartService() { return instance().cartService; }
 
     public static ProductService productService() { return instance().productService; }
+
+    public static CartStore cartStore() {
+        return instance().cartStore;
+    }
 }
