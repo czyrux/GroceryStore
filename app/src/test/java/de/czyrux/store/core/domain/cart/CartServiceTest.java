@@ -36,13 +36,6 @@ public class CartServiceTest {
     }
 
     @Test
-    public void updateCart_Should_CallSourceAndPublishInStore() {
-        cartService.updateCart().subscribe(new TestSubscriber<>());
-
-        verifyFetchCartAndPublish();
-    }
-
-    @Test
     public void addProduct_Should_CallDataSource() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
         when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Null.INSTANCE));
@@ -57,9 +50,8 @@ public class CartServiceTest {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
         when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Null.INSTANCE));
 
-        TestSubscriber<Cart> testSubscriber = new TestSubscriber<>();
         cartService.addProduct(product)
-                .subscribe(testSubscriber);
+                .subscribe(new TestSubscriber<>());
 
         verify(cartDataSource).addProduct(product);
         verifyFetchCartAndPublish();
@@ -81,9 +73,8 @@ public class CartServiceTest {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
         when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Null.INSTANCE));
 
-        TestSubscriber<Cart> testSubscriber = new TestSubscriber<>();
         cartService.removeProduct(product)
-                .subscribe(testSubscriber);
+                .subscribe(new TestSubscriber<>());
 
         verify(cartDataSource).removeProduct(product);
         verifyFetchCartAndPublish();
