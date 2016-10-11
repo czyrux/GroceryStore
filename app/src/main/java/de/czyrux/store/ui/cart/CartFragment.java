@@ -77,11 +77,7 @@ public class CartFragment extends BaseFragment implements CartListener {
 
         showProgressBar();
 
-        addSubscritiption(cartService.updateCart()
-                .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(RxUtil.emptyObserver()));
-
-        addSubscritiption(cartStore.observe()
+        addSubscritiption(cartService.getCart()
                 .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(this::onCartResponse, RxUtil.silentError()));
     }
