@@ -17,14 +17,12 @@ public class StoreTest {
 
     @Before
     public void setUp() throws Exception {
-        store = new Store<>(DEFAULT_VALUE);
+        store = new Store<>();
     }
 
     @Test
     public void should_EmitNothing_When_DefaultValueProvided() {
         TestSubscriber<String> testSubscriber = new TestSubscriber<>();
-
-        store = new Store<>();
 
         store.observe()
                 .subscribe(testSubscriber);
@@ -37,6 +35,8 @@ public class StoreTest {
     @Test
     public void should_EmitDefaultValue_When_NothingWasPublished() {
         TestSubscriber<String> testSubscriber = new TestSubscriber<>();
+
+        store = new Store<>(DEFAULT_VALUE);
 
         store.observe()
                 .subscribe(testSubscriber);
@@ -53,9 +53,7 @@ public class StoreTest {
     public void should_PropagateToEveryObserver() {
         TestSubscriber<String> testSubscriber1 = new TestSubscriber<>();
         TestSubscriber<String> testSubscriber2 = new TestSubscriber<>();
-
-        store = new Store<>();
-
+        
         store.observe()
                 .subscribe(testSubscriber1);
 
