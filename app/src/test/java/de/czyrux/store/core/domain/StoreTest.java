@@ -79,6 +79,19 @@ public class StoreTest {
         assertReceivedValue(testSubscriber, ANOTHER_VALUE);
     }
 
+    @Test
+    public void should_NotEmitDuplicated() {
+        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
+
+        store.observe()
+                .subscribe(testSubscriber);
+
+        store.publish(ANOTHER_VALUE);
+        store.publish(ANOTHER_VALUE);
+
+        assertReceivedValue(testSubscriber, ANOTHER_VALUE);
+    }
+
     private void assertReceivedValue(TestSubscriber<String> testSubscriber, String value) {
         testSubscriber.assertReceivedOnNext(Collections.singletonList(value));
         testSubscriber.assertNoErrors();
