@@ -5,7 +5,6 @@ import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartBuilder;
 import de.czyrux.store.core.domain.cart.CartDataSource;
 import de.czyrux.store.core.domain.cart.CartProduct;
-import de.czyrux.store.util.Null;
 import rx.Observable;
 
 public class InMemoryCartDataSource implements CartDataSource {
@@ -27,7 +26,7 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public Observable<Null> addProduct(CartProduct cartProduct) {
+    public Observable<Cart> addProduct(CartProduct cartProduct) {
         return Observable.defer(() -> {
             timeDelayer.delay();
 
@@ -35,12 +34,12 @@ public class InMemoryCartDataSource implements CartDataSource {
                     .addProduct(cartProduct)
                     .build();
 
-            return Observable.just(Null.INSTANCE);
+            return Observable.just(cart);
         });
     }
 
     @Override
-    public Observable<Null> removeProduct(CartProduct cartProduct) {
+    public Observable<Cart> removeProduct(CartProduct cartProduct) {
         return Observable.defer(() -> {
             timeDelayer.delay();
 
@@ -48,7 +47,7 @@ public class InMemoryCartDataSource implements CartDataSource {
                     .removeProduct(cartProduct)
                     .build();
 
-            return Observable.just(Null.INSTANCE);
+            return Observable.just(cart);
         });
     }
 }

@@ -8,7 +8,6 @@ import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartProduct;
 import de.czyrux.store.test.CartFakeCreator;
 import de.czyrux.store.test.CartProductFakeCreator;
-import de.czyrux.store.util.Null;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Mockito.mock;
@@ -42,21 +41,14 @@ public class InMemoryCartDataSourceTest {
 
         CartProduct product = CartProductFakeCreator.createProduct("Sku1", 2);
 
-        TestSubscriber<Null> addTestSubscriber = new TestSubscriber<>();
+        TestSubscriber<Cart> addTestSubscriber = new TestSubscriber<>();
 
         cartDataSource.addProduct(product)
                 .subscribe(addTestSubscriber);
 
+        addTestSubscriber.assertValue(CartFakeCreator.cartWithElements(product));
         addTestSubscriber.assertNoErrors();
         addTestSubscriber.assertCompleted();
-
-        TestSubscriber<Cart> testSubscriber = new TestSubscriber<>();
-        cartDataSource.getCart()
-                .subscribe(testSubscriber);
-
-        testSubscriber.assertCompleted();
-        testSubscriber.assertValue(CartFakeCreator.cartWithElements(product));
-        testSubscriber.assertNoErrors();
     }
 
     @Test
@@ -69,19 +61,12 @@ public class InMemoryCartDataSourceTest {
 
         CartProduct productToRemove = CartProductFakeCreator.createProduct("Sku2", 1);
 
-        TestSubscriber<Null> removeTestSubscriber = new TestSubscriber<>();
+        TestSubscriber<Cart> removeTestSubscriber = new TestSubscriber<>();
         cartDataSource.removeProduct(productToRemove)
                 .subscribe(removeTestSubscriber);
 
-        TestSubscriber<Cart> testSubscriber = new TestSubscriber<>();
-        cartDataSource.getCart()
-                .subscribe(testSubscriber);
-
+        removeTestSubscriber.assertValue(CartFakeCreator.cartWithElements(product, CartProductFakeCreator.createProduct("Sku2", 2)));
         removeTestSubscriber.assertNoErrors();
         removeTestSubscriber.assertCompleted();
-
-        testSubscriber.assertCompleted();
-        testSubscriber.assertValue(CartFakeCreator.cartWithElements(product, CartProductFakeCreator.createProduct("Sku2", 2)));
-        testSubscriber.assertNoErrors();
     }
 }

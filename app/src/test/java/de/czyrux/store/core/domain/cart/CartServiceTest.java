@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import de.czyrux.store.test.ProductFakeCreator;
-import de.czyrux.store.util.Null;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
@@ -38,7 +37,7 @@ public class CartServiceTest {
     @Test
     public void addProduct_Should_CallDataSource() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Null.INSTANCE));
+        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
 
         cartService.addProduct(product);
 
@@ -48,20 +47,20 @@ public class CartServiceTest {
     @Test
     public void addProduct_Should_UpdateStoreAfterOperation() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Null.INSTANCE));
+        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
 
         cartService.addProduct(product)
                 .subscribe(new TestSubscriber<>());
 
         verify(cartDataSource).addProduct(product);
-        verifyFetchCartAndPublish();
+        verifyCartPublished();
         verifyNoMoreInteractions(cartDataSource);
     }
 
     @Test
     public void removeProduct_Should_CallDataSource() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Null.INSTANCE));
+        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
 
         cartService.removeProduct(product);
 
@@ -71,13 +70,13 @@ public class CartServiceTest {
     @Test
     public void removeProduct_Should_UpdateStoreAfterOperation() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Null.INSTANCE));
+        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
 
         cartService.removeProduct(product)
                 .subscribe(new TestSubscriber<>());
 
         verify(cartDataSource).removeProduct(product);
-        verifyFetchCartAndPublish();
+        verifyCartPublished();
         verifyNoMoreInteractions(cartDataSource);
     }
 
@@ -87,12 +86,12 @@ public class CartServiceTest {
         cartService.getCart()
                 .subscribe(testSubscriber);
 
-        verifyFetchCartAndPublish();
+        verify(cartDataSource).getCart();
+        verifyCartPublished();
         verifyNoMoreInteractions(cartDataSource);
     }
 
-    private void verifyFetchCartAndPublish() {
+    private void verifyCartPublished() {
         verify(cartStore).publish(any(Cart.class));
-        verify(cartDataSource).getCart();
     }
 }
