@@ -12,24 +12,23 @@ public class CartService {
         this.cartStore = cartStore;
     }
 
-    private Observable<Cart> getCartAndPublish() {
-        return cartDataSource.getCart()
-                .doOnNext(cartStore::publish);
-    }
-
     public Observable<Cart> getCart() {
-        return getCartAndPublish()
+        return cartDataSource.getCart()
+                .compose(cartPublisher())
                 .flatMap(cart -> cartStore.observe());
     }
 
     public Observable<Cart> addProduct(CartProduct cartProduct) {
         return cartDataSource.addProduct(cartProduct)
-                .flatMap(n -> getCartAndPublish());
+                .compose(cartPublisher());
     }
 
     public Observable<Cart> removeProduct(CartProduct cartProduct) {
         return cartDataSource.removeProduct(cartProduct)
-                .flatMap(n -> getCartAndPublish());
+                .compose(cartPublisher());
     }
 
+    private Observable.Transformer<Cart, Cart> cartPublisher() {
+        return cartObservable -> cartObservable.doOnNext(cartStore::publish);
+    }
 }
