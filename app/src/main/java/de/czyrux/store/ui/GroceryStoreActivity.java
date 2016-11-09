@@ -19,7 +19,6 @@ import de.czyrux.store.ui.base.BaseActivity;
 import de.czyrux.store.ui.cart.CartFragment;
 import de.czyrux.store.ui.catalog.CatalogFragment;
 import de.czyrux.store.ui.util.PlaceholderFragment;
-import de.czyrux.store.util.RxUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -76,7 +75,7 @@ public class GroceryStoreActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         addSubscritiption(cartStore.observe()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .map(cart -> {
                     int cartProductsCount = 0;
                     for (CartProduct product : cart.products) {
@@ -85,7 +84,7 @@ public class GroceryStoreActivity extends BaseActivity {
                     return cartProductsCount;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::updateCartTabTitle, RxUtil.silentError()));
+                .subscribe(this::updateCartTabTitle));
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -106,7 +105,7 @@ public class GroceryStoreActivity extends BaseActivity {
 
     private static class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

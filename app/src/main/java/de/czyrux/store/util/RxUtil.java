@@ -29,9 +29,6 @@ public class RxUtil {
         }
     };
 
-    private static final Action1 EMPTY = o -> {
-    };
-
     private RxUtil() {
     }
 
@@ -46,11 +43,6 @@ public class RxUtil {
     @SuppressWarnings("unchecked")
     public static <T> Observer<T> emptyObserver() {
         return EMPTY_OBSERVER;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> Action1<T> empty() {
-        return EMPTY;
     }
 
     public static <T> Observable.Transformer<T, T> applyStandardSchedulers() {
