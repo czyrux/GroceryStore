@@ -20,7 +20,6 @@ import de.czyrux.store.ui.cart.CartFragment;
 import de.czyrux.store.ui.catalog.CatalogFragment;
 import de.czyrux.store.ui.util.PlaceholderFragment;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Actions;
 import rx.schedulers.Schedulers;
 
 public class GroceryStoreActivity extends BaseActivity {
@@ -85,7 +84,7 @@ public class GroceryStoreActivity extends BaseActivity {
                     return cartProductsCount;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::updateCartTabTitle, Actions.empty()));
+                .subscribe(this::updateCartTabTitle));
     }
 
     @SuppressWarnings("ConstantConditions")
