@@ -22,7 +22,7 @@ The app is a simulation of an e-commerce application with two main screens: a ca
 
 * [Store](/app/src/main/java/de/czyrux/store/core/domain/Store.java) as a backbone for sharing state across the application.
 
-**Full article**: [State propagation in Android with RxJava Subjects]()
+**Full article**: [State propagation in Android with RxJava Subjects](https://medium.com/@czyrux/state-propagation-in-android-with-rxjava-subjects-81db49a0dd8e#.ylft5ryj5)
 
 Flow updates for add2Cart operation:
 
