@@ -8,12 +8,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     private Unbinder unbinder;
@@ -31,7 +28,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        subscriptions.clear();
         disposables.dispose();
     }
 
@@ -39,10 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
-    }
-
-    protected final void addSubscritiption(Subscription subscription) {
-        subscriptions.add(subscription);
     }
 
     protected final void addDisposable(Disposable disposable) {
