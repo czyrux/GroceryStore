@@ -73,7 +73,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
         super.onStart();
         showProgressBar();
 
-        addDisposable(RxJavaInterop.toV2Observable(productService.getAllCatalog())
+        addDisposable(productService.getAllCatalog()
                 .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(this::onProductResponse, RxUtil.emptyConsumer()));
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import de.czyrux.store.core.data.util.TimeDelayer;
 import de.czyrux.store.core.domain.product.Product;
 import de.czyrux.store.core.domain.product.ProductDataSource;
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class InMemoryProductDataSource implements ProductDataSource {
 
