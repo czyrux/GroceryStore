@@ -19,7 +19,8 @@ import de.czyrux.store.core.domain.product.ProductResponse;
 import de.czyrux.store.core.domain.product.ProductService;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
-import de.czyrux.store.util.RxUtil;
+import de.czyrux.store.util.RxUtil2;
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 
 public class CatalogFragment extends BaseFragment implements CatalogListener {
 
@@ -72,9 +73,9 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
         super.onStart();
         showProgressBar();
 
-        addSubscritiption(productService.getAllCatalog()
-                .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(this::onProductResponse, RxUtil.logError()));
+        addDisposable(RxJavaInterop.toV2Observable(productService.getAllCatalog())
+                .compose(RxUtil2.applyStandardSchedulers())
+                .subscribe(this::onProductResponse, RxUtil2.emptyConsumer()));
     }
 
     private void showProgressBar() {
@@ -110,9 +111,9 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     @Override
     public void onProductClicked(Product product) {
         CartProduct cartProduct = CartProductFactory.newCartProduct(product, 1);
-        addSubscritiption(cartService.addProduct(cartProduct)
-                .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(RxUtil.emptyObserver()));
+        addDisposable(RxJavaInterop.toV2Observable(cartService.addProduct(cartProduct))
+                .compose(RxUtil2.applyStandardSchedulers())
+                .subscribeWith(RxUtil2.emptyObserver()));
 
         Toast.makeText(getContext(), "Adding to cart..." + product.title, Toast.LENGTH_SHORT).show();
     }
