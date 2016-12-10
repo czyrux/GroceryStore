@@ -19,8 +19,9 @@ import de.czyrux.store.ui.base.BaseActivity;
 import de.czyrux.store.ui.cart.CartFragment;
 import de.czyrux.store.ui.catalog.CatalogFragment;
 import de.czyrux.store.ui.util.PlaceholderFragment;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class GroceryStoreActivity extends BaseActivity {
 
@@ -74,7 +75,7 @@ public class GroceryStoreActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        addSubscritiption(cartStore.observe()
+        addDisposable(RxJavaInterop.toV2Observable(cartStore.observe())
                 .subscribeOn(Schedulers.computation())
                 .map(cart -> {
                     int cartProductsCount = 0;
