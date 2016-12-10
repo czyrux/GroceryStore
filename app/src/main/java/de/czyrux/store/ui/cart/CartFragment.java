@@ -16,11 +16,13 @@ import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartProduct;
 import de.czyrux.store.core.domain.cart.CartProductFactory;
 import de.czyrux.store.core.domain.cart.CartService;
-import de.czyrux.store.core.domain.cart.CartStore;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
 import de.czyrux.store.ui.util.PriceFormatter;
-import de.czyrux.store.util.RxUtil;
+import de.czyrux.store.util.RxUtil2;
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class CartFragment extends BaseFragment implements CartListener {
 
@@ -40,7 +42,6 @@ public class CartFragment extends BaseFragment implements CartListener {
     TextView checkoutTotal;
 
     private CartService cartService;
-    private CartStore cartStore;
 
     public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
@@ -61,7 +62,6 @@ public class CartFragment extends BaseFragment implements CartListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cartService = Injector.cartService();
-        cartStore = Injector.cartStore();
     }
 
     @Override
@@ -77,9 +77,10 @@ public class CartFragment extends BaseFragment implements CartListener {
 
         showProgressBar();
 
-        addSubscritiption(cartService.getCart()
-                .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(this::onCartResponse, RxUtil.silentError()));
+        addDisposable(RxJavaInterop.toV2Observable(cartService.getCart())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onCartResponse, RxUtil2.silentError()));
     }
 
     private void showProgressBar() {
@@ -125,9 +126,10 @@ public class CartFragment extends BaseFragment implements CartListener {
     @Override
     public void onCartProductClicked(CartProduct product) {
         Toast.makeText(getContext(), "Removing... " + product.title, Toast.LENGTH_SHORT).show();
-        addSubscritiption(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
-                .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(RxUtil.emptyObserver()));
+        addDisposable(RxJavaInterop.toV2Observable(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(RxUtil2.emptyObserver()));
     }
 
     @OnClick(R.id.cart_checkout_button)
