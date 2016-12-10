@@ -21,8 +21,6 @@ import de.czyrux.store.ui.base.BaseFragment;
 import de.czyrux.store.ui.util.PriceFormatter;
 import de.czyrux.store.util.RxUtil2;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class CartFragment extends BaseFragment implements CartListener {
 
@@ -78,9 +76,8 @@ public class CartFragment extends BaseFragment implements CartListener {
         showProgressBar();
 
         addDisposable(RxJavaInterop.toV2Observable(cartService.getCart())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onCartResponse, RxUtil2.silentError()));
+                .compose(RxUtil2.applyStandardSchedulers())
+                .subscribe(this::onCartResponse, RxUtil2.emptyConsumer()));
     }
 
     private void showProgressBar() {
@@ -127,8 +124,7 @@ public class CartFragment extends BaseFragment implements CartListener {
     public void onCartProductClicked(CartProduct product) {
         Toast.makeText(getContext(), "Removing... " + product.title, Toast.LENGTH_SHORT).show();
         addDisposable(RxJavaInterop.toV2Observable(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil2.applyStandardSchedulers())
                 .subscribeWith(RxUtil2.emptyObserver()));
     }
 

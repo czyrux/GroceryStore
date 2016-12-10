@@ -1,16 +1,16 @@
 package de.czyrux.store.util;
 
-import android.util.Log;
-
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.internal.functions.Functions;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Utility methods for RxJava 2
+ */
 public class RxUtil2 {
-
-    private static final Consumer<Throwable> EMPTY_ERROR = throwable -> {
-    };
-
-    private static final Consumer<Throwable> LOG_ERROR = throwable -> Log.e("Observable", Log.getStackTraceString(throwable));
 
     private static final DisposableObserver EMPTY_OBSERVER = new DisposableObserver() {
 
@@ -32,17 +32,17 @@ public class RxUtil2 {
     private RxUtil2() {
     }
 
-    public static Consumer<Throwable> silentError() {
-        return EMPTY_ERROR;
-    }
-
-    public static Consumer<Throwable> logError() {
-        return LOG_ERROR;
-    }
-
     @SuppressWarnings("unchecked")
     public static <T> DisposableObserver<T> emptyObserver() {
         return EMPTY_OBSERVER;
     }
 
+    public static Consumer<? super Throwable> emptyConsumer() {
+        return Functions.emptyConsumer();
+    }
+
+    public static <T> ObservableTransformer<T, T> applyStandardSchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }
