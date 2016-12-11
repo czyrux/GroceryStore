@@ -11,30 +11,27 @@ import io.reactivex.schedulers.Schedulers;
  * Utility methods for RxJava 2
  */
 public class RxUtil {
-
-    private static final DisposableObserver EMPTY_OBSERVER = new DisposableObserver() {
-
-        @Override
-        public void onError(Throwable e) {
-        }
-
-        @Override
-        public void onComplete() {
-
-        }
-
-        @Override
-        public void onNext(Object o) {
-        }
-    };
-
-
+    
     private RxUtil() {
     }
 
     @SuppressWarnings("unchecked")
     public static <T> DisposableObserver<T> emptyObserver() {
-        return EMPTY_OBSERVER;
+        return new DisposableObserver() {
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+            }
+        };
     }
 
     public static Consumer<? super Throwable> emptyConsumer() {
