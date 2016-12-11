@@ -1,6 +1,5 @@
 package de.czyrux.store.core.domain.cart;
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 
@@ -21,7 +20,7 @@ public class CartService {
     public Observable<Cart> getCart() {
         return cartDataSource.getCart()
                 .compose(cartPublisher())
-                .flatMap(cart -> RxJavaInterop.toV2Observable(cartStore.observe()));
+                .flatMap(cart -> cartStore.observe());
     }
 
     /**

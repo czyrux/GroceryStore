@@ -4,9 +4,7 @@ package de.czyrux.store.core.domain;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
-
-import rx.observers.TestSubscriber;
+import io.reactivex.observers.TestObserver;
 
 public class StoreTest {
 
@@ -21,27 +19,22 @@ public class StoreTest {
     }
 
     @Test
-    public void should_EmitNothing_When_DefaultValueProvided() {
-        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
-
+    public void should_EmitNothing_When_NoDefaultValueProvided() {
         store.observe()
-                .subscribe(testSubscriber);
-
-        testSubscriber.assertNoValues();
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertNotCompleted();
+                .test()
+                .assertNoValues()
+                .assertNoErrors()
+                .assertNotComplete();
     }
 
     @Test
     public void should_EmitDefaultValue_When_NothingWasPublished() {
-        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
 
         store = new Store<>(DEFAULT_VALUE);
 
-        store.observe()
-                .subscribe(testSubscriber);
+        TestObserver<String> testObserver = store.observe().test();
 
-        assertReceivedValue(testSubscriber, DEFAULT_VALUE);
+        assertReceivedValue(testObserver, DEFAULT_VALUE);
     }
 
     @Test
@@ -51,51 +44,45 @@ public class StoreTest {
 
     @Test
     public void should_PropagateToEveryObserver() {
-        TestSubscriber<String> testSubscriber1 = new TestSubscriber<>();
-        TestSubscriber<String> testSubscriber2 = new TestSubscriber<>();
-        
-        store.observe()
-                .subscribe(testSubscriber1);
 
-        store.observe()
-                .subscribe(testSubscriber2);
+        TestObserver<String> testObserver1 = store.observe().test();
+
+
+        TestObserver<String> testObserver2 = store.observe().test();
+
 
         store.publish(ANOTHER_VALUE);
 
-        assertReceivedValue(testSubscriber1, ANOTHER_VALUE);
+        assertReceivedValue(testObserver1, ANOTHER_VALUE);
 
-        assertReceivedValue(testSubscriber2, ANOTHER_VALUE);
+        assertReceivedValue(testObserver2, ANOTHER_VALUE);
     }
 
     @Test
     public void should_EmitLatest_When_ObserverSubscribe() {
-        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
 
         store.publish(ANOTHER_VALUE);
 
-        store.observe()
-                .subscribe(testSubscriber);
+        TestObserver<String> testObserver = store.observe().test();
 
-        assertReceivedValue(testSubscriber, ANOTHER_VALUE);
+        assertReceivedValue(testObserver, ANOTHER_VALUE);
     }
 
     @Test
     public void should_NotEmitDuplicated() {
-        TestSubscriber<String> testSubscriber = new TestSubscriber<>();
+        TestObserver<String> testObserver = store.observe().test();
 
-        store.observe()
-                .subscribe(testSubscriber);
 
         store.publish(ANOTHER_VALUE);
         store.publish(ANOTHER_VALUE);
 
-        assertReceivedValue(testSubscriber, ANOTHER_VALUE);
+        assertReceivedValue(testObserver, ANOTHER_VALUE);
     }
 
-    private void assertReceivedValue(TestSubscriber<String> testSubscriber, String value) {
-        testSubscriber.assertReceivedOnNext(Collections.singletonList(value));
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertNotCompleted();
+    private void assertReceivedValue(TestObserver<String> testSubscriber, String value) {
+        testSubscriber.assertValue(value)
+                .assertNoErrors()
+                .assertNotComplete();
     }
 
 }
