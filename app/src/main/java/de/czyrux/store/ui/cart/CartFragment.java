@@ -20,7 +20,6 @@ import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
 import de.czyrux.store.ui.util.PriceFormatter;
 import de.czyrux.store.util.RxUtil;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 
 public class CartFragment extends BaseFragment implements CartListener {
 
@@ -75,7 +74,7 @@ public class CartFragment extends BaseFragment implements CartListener {
 
         showProgressBar();
 
-        addDisposable(RxJavaInterop.toV2Observable(cartService.getCart())
+        addDisposable(cartService.getCart()
                 .compose(RxUtil.applyStandardSchedulers())
                 .subscribe(this::onCartResponse, RxUtil.emptyConsumer()));
     }
@@ -123,7 +122,7 @@ public class CartFragment extends BaseFragment implements CartListener {
     @Override
     public void onCartProductClicked(CartProduct product) {
         Toast.makeText(getContext(), "Removing... " + product.title, Toast.LENGTH_SHORT).show();
-        addDisposable(RxJavaInterop.toV2Observable(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1)))
+        addDisposable(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
                 .compose(RxUtil.applyStandardSchedulers())
                 .subscribeWith(RxUtil.emptyObserver()));
     }

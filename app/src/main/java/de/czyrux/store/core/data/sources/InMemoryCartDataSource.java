@@ -5,7 +5,7 @@ import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartBuilder;
 import de.czyrux.store.core.domain.cart.CartDataSource;
 import de.czyrux.store.core.domain.cart.CartProduct;
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class InMemoryCartDataSource implements CartDataSource {
 

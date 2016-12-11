@@ -6,8 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import de.czyrux.store.test.ProductFakeCreator;
-import rx.Observable;
-import rx.observers.TestSubscriber;
+import io.reactivex.Observable;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -50,7 +49,8 @@ public class CartServiceTest {
         when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
 
         cartService.addProduct(product)
-                .subscribe(new TestSubscriber<>());
+                .test()
+                .assertComplete();
 
         verify(cartDataSource).addProduct(product);
         verifyCartPublished();
@@ -62,7 +62,9 @@ public class CartServiceTest {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
         when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
 
-        cartService.removeProduct(product);
+        cartService.removeProduct(product)
+                .test()
+                .assertComplete();
 
         verify(cartDataSource).removeProduct(product);
     }
@@ -73,7 +75,8 @@ public class CartServiceTest {
         when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
 
         cartService.removeProduct(product)
-                .subscribe(new TestSubscriber<>());
+                .test()
+                .assertComplete();
 
         verify(cartDataSource).removeProduct(product);
         verifyCartPublished();
@@ -82,9 +85,9 @@ public class CartServiceTest {
 
     @Test
     public void getCart_Should_CallDataSourceAndUpdateStore() {
-        TestSubscriber<Cart> testSubscriber = new TestSubscriber<>();
         cartService.getCart()
-                .subscribe(testSubscriber);
+                .test()
+                .assertNotComplete();
 
         verify(cartDataSource).getCart();
         verifyCartPublished();

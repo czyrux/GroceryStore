@@ -20,7 +20,6 @@ import de.czyrux.store.core.domain.product.ProductService;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
 import de.czyrux.store.util.RxUtil;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 
 public class CatalogFragment extends BaseFragment implements CatalogListener {
 
@@ -111,7 +110,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     @Override
     public void onProductClicked(Product product) {
         CartProduct cartProduct = CartProductFactory.newCartProduct(product, 1);
-        addDisposable(RxJavaInterop.toV2Observable(cartService.addProduct(cartProduct))
+        addDisposable(cartService.addProduct(cartProduct)
                 .compose(RxUtil.applyStandardSchedulers())
                 .subscribeWith(RxUtil.emptyObserver()));
 
