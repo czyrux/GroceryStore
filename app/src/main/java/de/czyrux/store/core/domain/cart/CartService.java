@@ -1,6 +1,7 @@
 package de.czyrux.store.core.domain.cart;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
 
 public class CartService {
 
@@ -38,7 +39,7 @@ public class CartService {
                 .compose(cartPublisher());
     }
 
-    private Observable.Transformer<Cart, Cart> cartPublisher() {
+    private ObservableTransformer<Cart, Cart> cartPublisher() {
         return cartObservable -> cartObservable.doOnNext(cartStore::publish);
     }
 }

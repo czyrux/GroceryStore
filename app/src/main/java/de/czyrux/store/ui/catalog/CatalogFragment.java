@@ -72,9 +72,9 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
         super.onStart();
         showProgressBar();
 
-        addSubscritiption(productService.getAllCatalog()
+        addDisposable(productService.getAllCatalog()
                 .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(this::onProductResponse, RxUtil.logError()));
+                .subscribe(this::onProductResponse, RxUtil.emptyConsumer()));
     }
 
     private void showProgressBar() {
@@ -110,9 +110,9 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     @Override
     public void onProductClicked(Product product) {
         CartProduct cartProduct = CartProductFactory.newCartProduct(product, 1);
-        addSubscritiption(cartService.addProduct(cartProduct)
+        addDisposable(cartService.addProduct(cartProduct)
                 .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(RxUtil.emptyObserver()));
+                .subscribeWith(RxUtil.emptyObserver()));
 
         Toast.makeText(getContext(), "Adding to cart..." + product.title, Toast.LENGTH_SHORT).show();
     }

@@ -1,6 +1,6 @@
 package de.czyrux.store.core.domain.product;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ProductService {
 

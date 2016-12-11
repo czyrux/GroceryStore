@@ -16,7 +16,6 @@ import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartProduct;
 import de.czyrux.store.core.domain.cart.CartProductFactory;
 import de.czyrux.store.core.domain.cart.CartService;
-import de.czyrux.store.core.domain.cart.CartStore;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.ui.base.BaseFragment;
 import de.czyrux.store.ui.util.PriceFormatter;
@@ -40,7 +39,6 @@ public class CartFragment extends BaseFragment implements CartListener {
     TextView checkoutTotal;
 
     private CartService cartService;
-    private CartStore cartStore;
 
     public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
@@ -61,7 +59,6 @@ public class CartFragment extends BaseFragment implements CartListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cartService = Injector.cartService();
-        cartStore = Injector.cartStore();
     }
 
     @Override
@@ -77,9 +74,9 @@ public class CartFragment extends BaseFragment implements CartListener {
 
         showProgressBar();
 
-        addSubscritiption(cartService.getCart()
+        addDisposable(cartService.getCart()
                 .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(this::onCartResponse, RxUtil.silentError()));
+                .subscribe(this::onCartResponse, RxUtil.emptyConsumer()));
     }
 
     private void showProgressBar() {
@@ -125,9 +122,9 @@ public class CartFragment extends BaseFragment implements CartListener {
     @Override
     public void onCartProductClicked(CartProduct product) {
         Toast.makeText(getContext(), "Removing... " + product.title, Toast.LENGTH_SHORT).show();
-        addSubscritiption(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
+        addDisposable(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
                 .compose(RxUtil.applyStandardSchedulers())
-                .subscribe(RxUtil.emptyObserver()));
+                .subscribeWith(RxUtil.emptyObserver()));
     }
 
     @OnClick(R.id.cart_checkout_button)

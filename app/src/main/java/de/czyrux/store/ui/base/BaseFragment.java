@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public abstract class BaseFragment extends Fragment {
 
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final CompositeDisposable disposables = new CompositeDisposable();
     private Unbinder unbinder;
 
     @Override
@@ -36,10 +36,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        subscriptions.clear();
+        disposables.dispose();
     }
 
-    protected final void addSubscritiption(Subscription subscription) {
-        subscriptions.add(subscription);
+    protected final void addDisposable(Disposable disposable) {
+        disposables.add(disposable);
     }
 }

@@ -1,28 +1,28 @@
 package de.czyrux.store.core.domain;
 
-import com.jakewharton.rxrelay.BehaviorRelay;
-import com.jakewharton.rxrelay.Relay;
+import com.jakewharton.rxrelay2.BehaviorRelay;
+import com.jakewharton.rxrelay2.Relay;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class Store<T> {
 
-    private final Relay<T, T> storeSubject;
+    private final Relay<T> storeSubject;
 
     public Store() {
         this.storeSubject = BehaviorRelay.<T>create().toSerialized();
     }
 
     public Store(T defaultValue) {
-        this.storeSubject = BehaviorRelay.create(defaultValue).toSerialized();
+        this.storeSubject = BehaviorRelay.createDefault(defaultValue).toSerialized();
     }
 
     public Observable<T> observe() {
-        return storeSubject.asObservable()
+        return storeSubject.hide()
                 .distinctUntilChanged();
     }
 
     public void publish(T value) {
-        storeSubject.call(value);
+        storeSubject.accept(value);
     }
 }

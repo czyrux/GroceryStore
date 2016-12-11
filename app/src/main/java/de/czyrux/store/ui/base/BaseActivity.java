@@ -6,12 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final CompositeDisposable disposables = new CompositeDisposable();
+
     private Unbinder unbinder;
 
     @Override
@@ -27,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        subscriptions.clear();
+        disposables.dispose();
     }
 
     @Override
@@ -36,7 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    protected final void addSubscritiption(Subscription subscription) {
-        subscriptions.add(subscription);
+    protected final void addDisposable(Disposable disposable) {
+        disposables.add(disposable);
     }
+
 }

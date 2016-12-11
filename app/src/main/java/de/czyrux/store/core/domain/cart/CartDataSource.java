@@ -1,6 +1,6 @@
 package de.czyrux.store.core.domain.cart;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public interface CartDataSource {
 
