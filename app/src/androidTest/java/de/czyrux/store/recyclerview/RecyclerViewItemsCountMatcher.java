@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.czyrux.store.matchers;
+package de.czyrux.store.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -32,6 +32,9 @@ public class RecyclerViewItemsCountMatcher extends BaseMatcher<View> {
 
   @Override public boolean matches(Object item) {
     RecyclerView recyclerView = (RecyclerView) item;
+    if (recyclerView.getAdapter() == null) {
+      return false;
+    }
     return recyclerView.getAdapter().getItemCount() == expectedItemCount;
   }
 
