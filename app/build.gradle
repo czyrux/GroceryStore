@@ -12,6 +12,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -73,4 +74,29 @@ dependencies {
     }
 
     testCompile "junit:junit:$JUNIT_VERSION"
+
+    // ---- UI TEST CONFIGURATION
+
+    final ESPRESSO_VERSION = '2.2.2'
+    final DEXMAKER_VERSION = '1.2'
+    androidTestCompile "com.google.dexmaker:dexmaker:$DEXMAKER_VERSION"
+    androidTestCompile("com.google.dexmaker:dexmaker-mockito:$DEXMAKER_VERSION") {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
+
+    androidTestCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
+
+
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'javax.inject', module: 'javax.inject'
+        exclude group: 'com.squareup', module: 'javawriter'
+    }
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:$ESPRESSO_VERSION") {
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-v4'
+        exclude module: 'design'
+    }
+    androidTestCompile("com.android.support.test.espresso:espresso-intents:$ESPRESSO_VERSION")
 }
