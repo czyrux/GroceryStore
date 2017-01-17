@@ -122,9 +122,9 @@ public class CartFragment extends BaseFragment implements CartListener {
     @Override
     public void onCartProductClicked(CartProduct product) {
         Toast.makeText(getContext(), "Removing... " + product.title, Toast.LENGTH_SHORT).show();
-        addDisposable(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
-                .compose(RxUtil.applyObservableSchedulers())
-                .subscribeWith(RxUtil.emptyObserver()));
+        cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
+                .compose(RxUtil.applySingleSchedulers())
+                .subscribe(RxUtil.emptySingleObserver());
     }
 
     @OnClick(R.id.cart_checkout_button)

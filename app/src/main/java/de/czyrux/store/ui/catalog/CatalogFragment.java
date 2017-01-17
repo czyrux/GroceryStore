@@ -110,9 +110,9 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     @Override
     public void onProductClicked(Product product) {
         CartProduct cartProduct = CartProductFactory.newCartProduct(product, 1);
-        addDisposable(cartService.addProduct(cartProduct)
-                .compose(RxUtil.applyObservableSchedulers())
-                .subscribeWith(RxUtil.emptyObserver()));
+        cartService.addProduct(cartProduct)
+                .compose(RxUtil.applySingleSchedulers())
+                .subscribe(RxUtil.emptySingleObserver());
 
         Toast.makeText(getContext(), "Adding to cart..." + product.title, Toast.LENGTH_SHORT).show();
     }

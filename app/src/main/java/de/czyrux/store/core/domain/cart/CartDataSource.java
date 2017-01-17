@@ -11,5 +11,4 @@ public interface CartDataSource {
     Observable<Cart> removeProduct(CartProduct cartProduct);
 
     Observable<Cart> emptyCart();
-
 }

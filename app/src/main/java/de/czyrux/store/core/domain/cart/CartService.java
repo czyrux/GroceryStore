@@ -3,6 +3,7 @@ package de.czyrux.store.core.domain.cart;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.Single;
 
 public class CartService {
 
@@ -27,17 +28,19 @@ public class CartService {
     /**
      * Add a product to the Cart.
      */
-    public Observable<Cart> addProduct(CartProduct cartProduct) {
+    public Single<Cart> addProduct(CartProduct cartProduct) {
         return cartDataSource.addProduct(cartProduct)
-                .compose(cartPublisher());
+                .compose(cartPublisher())
+                .singleOrError();
     }
 
     /**
      * Remove a product to the Cart.
      */
-    public Observable<Cart> removeProduct(CartProduct cartProduct) {
+    public Single<Cart> removeProduct(CartProduct cartProduct) {
         return cartDataSource.removeProduct(cartProduct)
-                .compose(cartPublisher());
+                .compose(cartPublisher())
+                .singleOrError();
     }
 
     /**
