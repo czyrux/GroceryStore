@@ -1,7 +1,6 @@
 package de.czyrux.store.test;
 
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -13,29 +12,20 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import de.czyrux.store.R;
 import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartService;
 import de.czyrux.store.core.domain.cart.CartStore;
-import de.czyrux.store.core.domain.product.Product;
 import de.czyrux.store.core.domain.product.ProductResponse;
 import de.czyrux.store.core.domain.product.ProductService;
 import de.czyrux.store.inject.DependenciesFactory;
 import de.czyrux.store.inject.Injector;
+import de.czyrux.store.screen.CatalogScreen;
 import de.czyrux.store.toolbox.idlingresource.RxIdlingResource;
-import de.czyrux.store.toolbox.matchers.recyclerview.RecyclerViewInteraction;
-import de.czyrux.store.toolbox.matchers.recyclerview.RecyclerViewItemsCountMatcher;
 import de.czyrux.store.toolbox.mock.MockProductProvider;
 import de.czyrux.store.ui.GroceryStoreActivity;
 import io.reactivex.Observable;
 import io.reactivex.plugins.RxJavaPlugins;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -86,12 +76,9 @@ public class GroceryStoreActivityCatalogTest {
 
         startActivity();
 
-        onView(withId(R.id.catalog_recyclerview))
-                .check(matches(RecyclerViewItemsCountMatcher.recyclerViewHasItemCount(response.getProducts().size())));
+        CatalogScreen.matchesProductCount(response.getProducts().size());
 
-        RecyclerViewInteraction.<Product>onRecyclerView(withId(R.id.catalog_recyclerview))
-                .withItems(response.getProducts())
-                .check((product, view, e) -> matches(hasDescendant(withText(product.title))).check(view, e));
+        CatalogScreen.containsProducts(response.getProducts());
     }
 
     @Test
@@ -100,7 +87,7 @@ public class GroceryStoreActivityCatalogTest {
 
         startActivity();
 
-        onView(withId(R.id.cart_emptyView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        CatalogScreen.emptyCatalogVisible();
     }
 
     private ProductResponse givenCatalogWithProducts() {
