@@ -14,33 +14,29 @@
  * limitations under the License.
  */
 
-package de.czyrux.store.idlingresource;
+package de.czyrux.store.toolbox.idlingresource;
 
 import android.app.Activity;
 import android.support.test.espresso.IdlingResource;
-import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-public class RecyclerViewWithContentIdlingResource implements IdlingResource {
+public class WaitForViewVisibleIdlingResource implements IdlingResource {
 
   private final Activity activity;
-  private final int recyclerViewId;
-  private final int numberOfItems;
+  private final int viewId;
 
-  public RecyclerViewWithContentIdlingResource(Activity activity, int recyclerViewId,
-      int numberOfItems) {
+  public WaitForViewVisibleIdlingResource(Activity activity, int viewId) {
     this.activity = activity;
-    this.recyclerViewId = recyclerViewId;
-    this.numberOfItems = numberOfItems;
+    this.viewId = viewId;
   }
 
   @Override public String getName() {
-    return "RecyclerViewWithContentIdlingResource";
+    return "WaitForViewVisibleIdlingResource";
   }
 
   @Override public boolean isIdleNow() {
-    RecyclerView recyclerView = (RecyclerView) activity.findViewById(recyclerViewId);
-    int numberOfItemsInRecyclerView = recyclerView.getAdapter().getItemCount();
-    return numberOfItemsInRecyclerView == numberOfItems;
+    View view = activity.findViewById(viewId);
+    return view.isShown();
   }
 
   @Override public void registerIdleTransitionCallback(ResourceCallback callback) {

@@ -1,7 +1,7 @@
 /*
  * http://blog.sqisland.com/2015/05/espresso-match-toolbar-title.html
  */
-package de.czyrux.store.matchers;
+package de.czyrux.store.toolbox.matchers;
 
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.matcher.BoundedMatcher;

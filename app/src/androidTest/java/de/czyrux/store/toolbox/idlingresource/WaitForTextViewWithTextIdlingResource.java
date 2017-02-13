@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.czyrux.store.idlingresource;
+package de.czyrux.store.toolbox.idlingresource;
 
 import android.app.Activity;
 import android.support.test.espresso.IdlingResource;

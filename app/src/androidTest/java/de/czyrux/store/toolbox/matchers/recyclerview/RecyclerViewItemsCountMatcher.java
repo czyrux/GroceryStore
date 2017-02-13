@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.czyrux.store.recyclerview;
+package de.czyrux.store.toolbox.matchers.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

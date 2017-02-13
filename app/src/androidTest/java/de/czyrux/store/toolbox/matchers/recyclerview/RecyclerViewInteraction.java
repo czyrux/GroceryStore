@@ -1,7 +1,7 @@
 /*
  * https://gist.github.com/RomainPiel/ec10302a4687171a5e1a
  */
-package de.czyrux.store.recyclerview;
+package de.czyrux.store.toolbox.matchers.recyclerview;
 
 import android.support.test.espresso.NoMatchingViewException;
 import android.view.View;
