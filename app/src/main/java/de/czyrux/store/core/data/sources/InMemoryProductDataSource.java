@@ -21,7 +21,6 @@ public class InMemoryProductDataSource implements ProductDataSource {
             timeDelayer.delay();
             List<Product> products = ProductProvider.getProductList();
 
-            Thread.sleep(5000);
             return Observable.just(products);
         });
     }
