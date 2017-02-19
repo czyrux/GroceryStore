@@ -5,9 +5,9 @@ import java.util.List;
 
 import de.czyrux.store.core.domain.product.Product;
 
-public class ProductProviderScaffolding {
+class ProductProvider {
 
-    private ProductProviderScaffolding() {
+    private ProductProvider() {
     }
 
     public static List<Product> getProductList() {

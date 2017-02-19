@@ -18,7 +18,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class CatalogScreen {
 
-    public static void emptyCatalogVisible() {
+    public static void showsEmptyCatalog() {
         onView(withId(R.id.catalog_emptyView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 

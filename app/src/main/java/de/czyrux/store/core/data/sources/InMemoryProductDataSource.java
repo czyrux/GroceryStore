@@ -19,7 +19,7 @@ public class InMemoryProductDataSource implements ProductDataSource {
     public Observable<List<Product>> getAllCatalog() {
         return Observable.defer(() -> {
             timeDelayer.delay();
-            List<Product> products = ProductProviderScaffolding.getProductList();
+            List<Product> products = ProductProvider.getProductList();
 
             Thread.sleep(5000);
             return Observable.just(products);

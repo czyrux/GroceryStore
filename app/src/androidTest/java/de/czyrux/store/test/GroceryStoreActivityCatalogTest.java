@@ -12,16 +12,17 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import de.czyrux.store.core.domain.cart.Cart;
-import de.czyrux.store.core.domain.cart.CartService;
-import de.czyrux.store.core.domain.cart.CartStore;
-import de.czyrux.store.core.domain.product.ProductResponse;
-import de.czyrux.store.core.domain.product.ProductService;
-import de.czyrux.store.inject.DependenciesFactory;
+import java.util.Collections;
+import java.util.List;
+
+import de.czyrux.store.core.domain.product.Product;
+import de.czyrux.store.core.domain.product.ProductDataSource;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.screen.CatalogScreen;
 import de.czyrux.store.toolbox.idlingresource.RxIdlingResource;
 import de.czyrux.store.toolbox.mock.MockProductProvider;
+import de.czyrux.store.toolbox.mock.TestDataDependenciesFactory;
+import de.czyrux.store.toolbox.mock.TestDependenciesFactory;
 import de.czyrux.store.ui.GroceryStoreActivity;
 import io.reactivex.Observable;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -36,10 +37,7 @@ public class GroceryStoreActivityCatalogTest {
     public ActivityTestRule<GroceryStoreActivity> groceryStoreActivityActivityTestRule = new ActivityTestRule<>(GroceryStoreActivity.class, true, false);
 
     @Mock
-    ProductService productService;
-
-    @Mock
-    CartService cartService;
+    ProductDataSource mockProductDataSource;
 
     @Before
     public void setUp() throws Exception {
@@ -49,36 +47,22 @@ public class GroceryStoreActivityCatalogTest {
         Espresso.registerIdlingResources(rxIdlingResource);
         RxJavaPlugins.setScheduleHandler(rxIdlingResource);
 
-        when(cartService.getCart()).thenReturn(Observable.just(Cart.EMPTY));
+        TestDataDependenciesFactory dataDependencies = TestDataDependenciesFactory.fromDefault()
+                .overrideProductDataSource(mockProductDataSource)
+                .build();
 
-        Injector.using(new DependenciesFactory() {
-
-            @Override
-            public CartService createCartService() {
-                return cartService;
-            }
-
-            @Override
-            public ProductService createProductService() {
-                return productService;
-            }
-
-            @Override
-            public CartStore createCartStore() {
-                return new CartStore();
-            }
-        });
+        Injector.using(TestDependenciesFactory.fromDefault(dataDependencies)
+                .build());
     }
 
     @Test
     public void showsAllProducts() {
-        ProductResponse response = givenCatalogWithProducts();
+        List<Product> mockProducts = givenCatalogWithProducts();
 
         startActivity();
 
-        CatalogScreen.matchesProductCount(response.getProducts().size());
-
-        CatalogScreen.containsProducts(response.getProducts());
+        CatalogScreen.matchesProductCount(mockProducts.size());
+        CatalogScreen.containsProducts(mockProducts);
     }
 
     @Test
@@ -87,18 +71,17 @@ public class GroceryStoreActivityCatalogTest {
 
         startActivity();
 
-        CatalogScreen.emptyCatalogVisible();
+        CatalogScreen.showsEmptyCatalog();
     }
 
-    private ProductResponse givenCatalogWithProducts() {
-        ProductResponse mockProductResponse = new ProductResponse(MockProductProvider.getMockProducts());
-        when(productService.getAllCatalog()).thenReturn(Observable.just(mockProductResponse));
-
-        return mockProductResponse;
+    private List<Product> givenCatalogWithProducts() {
+        List<Product> mockProducts = MockProductProvider.getMockProducts();
+        when(mockProductDataSource.getAllCatalog()).thenReturn(Observable.just(mockProducts));
+        return mockProducts;
     }
 
     private void givenEmptyCatalog() {
-        when(productService.getAllCatalog()).thenReturn(Observable.just(new ProductResponse(null)));
+        when(mockProductDataSource.getAllCatalog()).thenReturn(Observable.just(Collections.emptyList()));
     }
 
     private GroceryStoreActivity startActivity() {
