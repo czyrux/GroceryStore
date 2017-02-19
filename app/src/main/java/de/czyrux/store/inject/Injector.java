@@ -13,7 +13,7 @@ public class Injector {
     private final ProductService productService;
     private final CartStore cartStore;
 
-    public Injector(CartService cartService, ProductService productService, CartStore cartStore) {
+    private Injector(CartService cartService, ProductService productService, CartStore cartStore) {
         this.cartService = cartService;
         this.productService = productService;
         this.cartStore = cartStore;
