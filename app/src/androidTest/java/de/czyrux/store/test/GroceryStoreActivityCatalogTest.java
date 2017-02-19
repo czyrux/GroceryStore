@@ -1,6 +1,5 @@
 package de.czyrux.store.test;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -19,13 +18,12 @@ import de.czyrux.store.core.domain.product.Product;
 import de.czyrux.store.core.domain.product.ProductDataSource;
 import de.czyrux.store.inject.Injector;
 import de.czyrux.store.screen.CatalogScreen;
-import de.czyrux.store.toolbox.idlingresource.RxIdlingResource;
 import de.czyrux.store.toolbox.mock.MockProductProvider;
 import de.czyrux.store.toolbox.mock.TestDataDependenciesFactory;
 import de.czyrux.store.toolbox.mock.TestDependenciesFactory;
+import de.czyrux.store.toolbox.rules.RxIdlingRule;
 import de.czyrux.store.ui.GroceryStoreActivity;
 import io.reactivex.Observable;
-import io.reactivex.plugins.RxJavaPlugins;
 
 import static org.mockito.Mockito.when;
 
@@ -36,16 +34,15 @@ public class GroceryStoreActivityCatalogTest {
     @Rule
     public ActivityTestRule<GroceryStoreActivity> groceryStoreActivityActivityTestRule = new ActivityTestRule<>(GroceryStoreActivity.class, true, false);
 
+    @Rule
+    public RxIdlingRule rxIdlingRule = new RxIdlingRule();
+
     @Mock
     ProductDataSource mockProductDataSource;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-
-        RxIdlingResource rxIdlingResource = new RxIdlingResource();
-        Espresso.registerIdlingResources(rxIdlingResource);
-        RxJavaPlugins.setScheduleHandler(rxIdlingResource);
 
         TestDataDependenciesFactory dataDependencies = TestDataDependenciesFactory.fromDefault()
                 .overrideProductDataSource(mockProductDataSource)
