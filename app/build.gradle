@@ -4,7 +4,7 @@ apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.2"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "de.czyrux.store"
@@ -86,11 +86,10 @@ dependencies {
 
     androidTestCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
 
-
     androidTestCompile("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION") {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'javax.inject', module: 'javax.inject'
-        exclude group: 'com.squareup', module: 'javawriter'
+        exclude module: 'support-annotations'
+        exclude module: 'javax.inject'
+        exclude module: 'javawriter'
     }
     androidTestCompile("com.android.support.test.espresso:espresso-contrib:$ESPRESSO_VERSION") {
         exclude module: 'support-annotations'
@@ -98,5 +97,7 @@ dependencies {
         exclude module: 'support-v4'
         exclude module: 'design'
     }
-    androidTestCompile("com.android.support.test.espresso:espresso-intents:$ESPRESSO_VERSION")
+    androidTestCompile("com.android.support.test.espresso:espresso-intents:$ESPRESSO_VERSION") {
+        exclude module: 'support-annotations'
+    }
 }
