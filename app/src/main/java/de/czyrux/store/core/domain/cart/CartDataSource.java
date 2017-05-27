@@ -1,14 +1,14 @@
 package de.czyrux.store.core.domain.cart;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public interface CartDataSource {
 
-    Observable<Cart> getCart();
+    Single<Cart> getCart();
 
-    Observable<Cart> addProduct(CartProduct cartProduct);
+    Single<Cart> addProduct(CartProduct cartProduct);
 
-    Observable<Cart> removeProduct(CartProduct cartProduct);
+    Single<Cart> removeProduct(CartProduct cartProduct);
 
-    Observable<Cart> emptyCart();
+    Single<Cart> emptyCart();
 }

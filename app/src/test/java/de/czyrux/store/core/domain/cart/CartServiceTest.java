@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import de.czyrux.store.test.ProductFakeCreator;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -30,13 +30,13 @@ public class CartServiceTest {
         cartService = new CartService(cartDataSource, cartStore);
 
         Cart cart = Cart.EMPTY;
-        when(cartDataSource.getCart()).thenReturn(Observable.just(cart));
+        when(cartDataSource.getCart()).thenReturn(Single.just(cart));
     }
 
     @Test
     public void addProduct_Should_CallDataSource() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
+        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Single.just(Cart.EMPTY));
 
         cartService.addProduct(product);
 
@@ -46,7 +46,7 @@ public class CartServiceTest {
     @Test
     public void addProduct_Should_UpdateStoreAfterOperation() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
+        when(cartDataSource.addProduct(any(CartProduct.class))).thenReturn(Single.just(Cart.EMPTY));
 
         cartService.addProduct(product)
                 .test()
@@ -60,7 +60,7 @@ public class CartServiceTest {
     @Test
     public void removeProduct_Should_CallDataSource() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
+        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Single.just(Cart.EMPTY));
 
         cartService.removeProduct(product)
                 .test()
@@ -72,7 +72,7 @@ public class CartServiceTest {
     @Test
     public void removeProduct_Should_UpdateStoreAfterOperation() {
         CartProduct product = CartProductFactory.newCartProduct(ProductFakeCreator.createProduct(), 1);
-        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Observable.just(Cart.EMPTY));
+        when(cartDataSource.removeProduct(any(CartProduct.class))).thenReturn(Single.just(Cart.EMPTY));
 
         cartService.removeProduct(product)
                 .test()
@@ -85,7 +85,7 @@ public class CartServiceTest {
 
     @Test
     public void clear_Should_UpdateStoreAfterOperation() {
-        when(cartDataSource.emptyCart()).thenReturn(Observable.just(Cart.EMPTY));
+        when(cartDataSource.emptyCart()).thenReturn(Single.just(Cart.EMPTY));
 
         cartService.clear()
                 .test()

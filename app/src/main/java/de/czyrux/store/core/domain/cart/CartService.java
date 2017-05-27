@@ -2,8 +2,8 @@ package de.czyrux.store.core.domain.cart;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
+import io.reactivex.SingleTransformer;
 
 public class CartService {
 
@@ -22,6 +22,7 @@ public class CartService {
     public Observable<Cart> getCart() {
         return cartDataSource.getCart()
                 .compose(cartPublisher())
+                .toObservable()
                 .flatMap(cart -> cartStore.observe());
     }
 
@@ -30,8 +31,7 @@ public class CartService {
      */
     public Single<Cart> addProduct(CartProduct cartProduct) {
         return cartDataSource.addProduct(cartProduct)
-                .compose(cartPublisher())
-                .singleOrError();
+                .compose(cartPublisher());
     }
 
     /**
@@ -39,8 +39,7 @@ public class CartService {
      */
     public Single<Cart> removeProduct(CartProduct cartProduct) {
         return cartDataSource.removeProduct(cartProduct)
-                .compose(cartPublisher())
-                .singleOrError();
+                .compose(cartPublisher());
     }
 
     /**
@@ -49,10 +48,10 @@ public class CartService {
     public Completable clear() {
         return cartDataSource.emptyCart()
                 .compose(cartPublisher())
-                .ignoreElements();
+                .toCompletable();
     }
 
-    private ObservableTransformer<Cart, Cart> cartPublisher() {
-        return cartObservable -> cartObservable.doOnNext(cartStore::publish);
+    private SingleTransformer<Cart, Cart> cartPublisher() {
+        return cartObservable -> cartObservable.doOnSuccess(cartStore::publish);
     }
 }
