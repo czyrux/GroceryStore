@@ -9,4 +9,7 @@ public interface CartDataSource {
     Observable<Cart> addProduct(CartProduct cartProduct);
 
     Observable<Cart> removeProduct(CartProduct cartProduct);
+
+    Observable<Cart> emptyCart();
+
 }

@@ -1,5 +1,6 @@
 package de.czyrux.store.core.domain.cart;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 
@@ -37,6 +38,15 @@ public class CartService {
     public Observable<Cart> removeProduct(CartProduct cartProduct) {
         return cartDataSource.removeProduct(cartProduct)
                 .compose(cartPublisher());
+    }
+
+    /**
+     * Clear Cart content.
+     */
+    public Completable clear() {
+        return cartDataSource.emptyCart()
+                .compose(cartPublisher())
+                .ignoreElements();
     }
 
     private ObservableTransformer<Cart, Cart> cartPublisher() {
