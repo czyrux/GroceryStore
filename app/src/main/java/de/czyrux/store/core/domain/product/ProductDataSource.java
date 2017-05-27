@@ -2,8 +2,8 @@ package de.czyrux.store.core.domain.product;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public interface ProductDataSource {
-    Observable<List<Product>> getAllCatalog();
+    Single<List<Product>> getAllCatalog();
 }

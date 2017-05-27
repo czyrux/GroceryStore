@@ -73,7 +73,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
         showProgressBar();
 
         addDisposable(productService.getAllCatalog()
-                .compose(RxUtil.applyObservableSchedulers())
+                .compose(RxUtil.applySingleSchedulers())
                 .subscribe(this::onProductResponse, RxUtil.emptyConsumer()));
     }
 
