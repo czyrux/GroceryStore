@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        disposables.dispose();
+        disposables.clear();
     }
 
     @Override

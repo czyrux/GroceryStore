@@ -36,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        disposables.dispose();
+        disposables.clear();
     }
 
     protected final void addDisposable(Disposable disposable) {
