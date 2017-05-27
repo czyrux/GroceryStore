@@ -1,6 +1,6 @@
 package de.czyrux.store.core.domain.product;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class ProductService {
 
@@ -10,7 +10,7 @@ public class ProductService {
         this.productDataSource = productDataSource;
     }
 
-    public Observable<ProductResponse> getAllCatalog() {
+    public Single<ProductResponse> getAllCatalog() {
         return productDataSource.getAllCatalog()
                 .map(ProductResponse::new);
     }

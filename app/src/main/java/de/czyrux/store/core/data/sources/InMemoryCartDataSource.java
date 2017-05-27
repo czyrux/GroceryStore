@@ -5,7 +5,7 @@ import de.czyrux.store.core.domain.cart.Cart;
 import de.czyrux.store.core.domain.cart.CartBuilder;
 import de.czyrux.store.core.domain.cart.CartDataSource;
 import de.czyrux.store.core.domain.cart.CartProduct;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class InMemoryCartDataSource implements CartDataSource {
 
@@ -18,16 +18,16 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public synchronized Observable<Cart> getCart() {
-        return Observable.fromCallable(() -> {
+    public synchronized Single<Cart> getCart() {
+        return Single.fromCallable(() -> {
             timeDelayer.delay();
             return cart;
         });
     }
 
     @Override
-    public synchronized Observable<Cart> addProduct(CartProduct cartProduct) {
-        return Observable.fromCallable(() -> {
+    public synchronized Single<Cart> addProduct(CartProduct cartProduct) {
+        return Single.fromCallable(() -> {
             timeDelayer.delay();
 
             cart = CartBuilder.from(cart)
@@ -39,8 +39,8 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public synchronized Observable<Cart> removeProduct(CartProduct cartProduct) {
-        return Observable.fromCallable(() -> {
+    public synchronized Single<Cart> removeProduct(CartProduct cartProduct) {
+        return Single.fromCallable(() -> {
             timeDelayer.delay();
 
             cart = CartBuilder.from(cart)
@@ -52,8 +52,8 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public synchronized Observable<Cart> emptyCart() {
-        return Observable.fromCallable(() -> {
+    public synchronized Single<Cart> emptyCart() {
+        return Single.fromCallable(() -> {
             timeDelayer.delay();
             cart = Cart.EMPTY;
             return cart;

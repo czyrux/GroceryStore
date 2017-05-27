@@ -5,7 +5,7 @@ import java.util.List;
 import de.czyrux.store.core.data.util.TimeDelayer;
 import de.czyrux.store.core.domain.product.Product;
 import de.czyrux.store.core.domain.product.ProductDataSource;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class InMemoryProductDataSource implements ProductDataSource {
 
@@ -16,8 +16,8 @@ public class InMemoryProductDataSource implements ProductDataSource {
     }
 
     @Override
-    public Observable<List<Product>> getAllCatalog() {
-        return Observable.fromCallable(() -> {
+    public Single<List<Product>> getAllCatalog() {
+        return Single.fromCallable(() -> {
             timeDelayer.delay();
             return ProductProvider.getProductList();
         });

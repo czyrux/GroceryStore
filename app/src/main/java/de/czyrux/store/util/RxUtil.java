@@ -3,6 +3,7 @@ package de.czyrux.store.util;
 import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableTransformer;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.SingleObserver;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -34,6 +35,22 @@ public class RxUtil {
 
             @Override
             public void onNext(Object o) {
+            }
+        };
+    }
+
+    public static <T> SingleObserver<T> emptySingleObserver() {
+        return new SingleObserver<T>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onSuccess(T value) {
+            }
+
+            @Override
+            public void onError(Throwable e) {
             }
         };
     }
