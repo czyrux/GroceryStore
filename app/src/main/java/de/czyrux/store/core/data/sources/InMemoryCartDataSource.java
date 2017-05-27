@@ -18,36 +18,36 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public Observable<Cart> getCart() {
-        return Observable.defer(() -> {
+    public synchronized Observable<Cart> getCart() {
+        return Observable.fromCallable(() -> {
             timeDelayer.delay();
-            return Observable.just(cart);
+            return cart;
         });
     }
 
     @Override
-    public Observable<Cart> addProduct(CartProduct cartProduct) {
-        return Observable.defer(() -> {
+    public synchronized Observable<Cart> addProduct(CartProduct cartProduct) {
+        return Observable.fromCallable(() -> {
             timeDelayer.delay();
 
             cart = CartBuilder.from(cart)
                     .addProduct(cartProduct)
                     .build();
 
-            return Observable.just(cart);
+            return cart;
         });
     }
 
     @Override
-    public Observable<Cart> removeProduct(CartProduct cartProduct) {
-        return Observable.defer(() -> {
+    public synchronized Observable<Cart> removeProduct(CartProduct cartProduct) {
+        return Observable.fromCallable(() -> {
             timeDelayer.delay();
 
             cart = CartBuilder.from(cart)
                     .removeProduct(cartProduct)
                     .build();
 
-            return Observable.just(cart);
+            return cart;
         });
     }
 }
