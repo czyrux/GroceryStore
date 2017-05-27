@@ -23,7 +23,7 @@ import de.czyrux.store.toolbox.mock.TestDataDependenciesFactory;
 import de.czyrux.store.toolbox.mock.TestDependenciesFactory;
 import de.czyrux.store.toolbox.rules.RxIdlingRule;
 import de.czyrux.store.ui.GroceryStoreActivity;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import static org.mockito.Mockito.when;
 
@@ -73,12 +73,12 @@ public class GroceryStoreActivityCatalogTest {
 
     private List<Product> givenCatalogWithProducts() {
         List<Product> mockProducts = MockProductProvider.getMockProducts();
-        when(mockProductDataSource.getAllCatalog()).thenReturn(Observable.just(mockProducts));
+        when(mockProductDataSource.getAllCatalog()).thenReturn(Single.just(mockProducts));
         return mockProducts;
     }
 
     private void givenEmptyCatalog() {
-        when(mockProductDataSource.getAllCatalog()).thenReturn(Observable.just(Collections.emptyList()));
+        when(mockProductDataSource.getAllCatalog()).thenReturn(Single.just(Collections.emptyList()));
     }
 
     private GroceryStoreActivity startActivity() {

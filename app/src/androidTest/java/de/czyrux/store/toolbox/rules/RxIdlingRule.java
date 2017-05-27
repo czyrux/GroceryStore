@@ -20,9 +20,11 @@ public class RxIdlingRule implements TestRule {
                 Espresso.registerIdlingResources(rxIdlingResource);
                 RxJavaPlugins.setScheduleHandler(rxIdlingResource);
 
-                base.evaluate();
-
-                Espresso.unregisterIdlingResources(rxIdlingResource);
+                try {
+                    base.evaluate();
+                } finally {
+                    Espresso.unregisterIdlingResources(rxIdlingResource);
+                }
             }
         };
     }
