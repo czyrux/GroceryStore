@@ -18,7 +18,7 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public Observable<Cart> getCart() {
+    public synchronized Observable<Cart> getCart() {
         return Observable.fromCallable(() -> {
             timeDelayer.delay();
             return cart;
@@ -26,7 +26,7 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public Observable<Cart> addProduct(CartProduct cartProduct) {
+    public synchronized Observable<Cart> addProduct(CartProduct cartProduct) {
         return Observable.fromCallable(() -> {
             timeDelayer.delay();
 
@@ -39,7 +39,7 @@ public class InMemoryCartDataSource implements CartDataSource {
     }
 
     @Override
-    public Observable<Cart> removeProduct(CartProduct cartProduct) {
+    public synchronized Observable<Cart> removeProduct(CartProduct cartProduct) {
         return Observable.fromCallable(() -> {
             timeDelayer.delay();
 
