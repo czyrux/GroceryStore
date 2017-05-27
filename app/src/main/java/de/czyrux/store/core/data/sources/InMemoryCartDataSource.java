@@ -50,4 +50,13 @@ public class InMemoryCartDataSource implements CartDataSource {
             return cart;
         });
     }
+
+    @Override
+    public synchronized Observable<Cart> emptyCart() {
+        return Observable.fromCallable(() -> {
+            timeDelayer.delay();
+            cart = Cart.EMPTY;
+            return cart;
+        });
+    }
 }

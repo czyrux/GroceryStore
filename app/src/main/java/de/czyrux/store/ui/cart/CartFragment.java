@@ -75,7 +75,7 @@ public class CartFragment extends BaseFragment implements CartListener {
         showProgressBar();
 
         addDisposable(cartService.getCart()
-                .compose(RxUtil.applyStandardSchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .subscribe(this::onCartResponse, RxUtil.emptyConsumer()));
     }
 
@@ -123,12 +123,15 @@ public class CartFragment extends BaseFragment implements CartListener {
     public void onCartProductClicked(CartProduct product) {
         Toast.makeText(getContext(), "Removing... " + product.title, Toast.LENGTH_SHORT).show();
         addDisposable(cartService.removeProduct(CartProductFactory.newCartProduct(product, 1))
-                .compose(RxUtil.applyStandardSchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .subscribeWith(RxUtil.emptyObserver()));
     }
 
     @OnClick(R.id.cart_checkout_button)
     void onCheckoutClicked() {
-        Toast.makeText(getContext(), "Checkout", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Checkout...", Toast.LENGTH_SHORT).show();
+        cartService.clear()
+                .compose(RxUtil.applyCompletableSchedulers())
+                .subscribe(RxUtil.emptyCompletableObserver());
     }
 }

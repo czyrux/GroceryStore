@@ -73,7 +73,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
         showProgressBar();
 
         addDisposable(productService.getAllCatalog()
-                .compose(RxUtil.applyStandardSchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .subscribe(this::onProductResponse, RxUtil.emptyConsumer()));
     }
 
@@ -111,7 +111,7 @@ public class CatalogFragment extends BaseFragment implements CatalogListener {
     public void onProductClicked(Product product) {
         CartProduct cartProduct = CartProductFactory.newCartProduct(product, 1);
         addDisposable(cartService.addProduct(cartProduct)
-                .compose(RxUtil.applyStandardSchedulers())
+                .compose(RxUtil.applyObservableSchedulers())
                 .subscribeWith(RxUtil.emptyObserver()));
 
         Toast.makeText(getContext(), "Adding to cart..." + product.title, Toast.LENGTH_SHORT).show();

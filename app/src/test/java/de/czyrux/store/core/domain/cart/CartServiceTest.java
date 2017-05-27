@@ -84,6 +84,19 @@ public class CartServiceTest {
     }
 
     @Test
+    public void clear_Should_UpdateStoreAfterOperation() {
+        when(cartDataSource.emptyCart()).thenReturn(Observable.just(Cart.EMPTY));
+
+        cartService.clear()
+                .test()
+                .assertComplete();
+
+        verify(cartDataSource).emptyCart();
+        verifyCartPublished();
+        verifyNoMoreInteractions(cartDataSource);
+    }
+
+    @Test
     public void getCart_Should_CallDataSourceAndUpdateStore() {
         cartService.getCart()
                 .test()
